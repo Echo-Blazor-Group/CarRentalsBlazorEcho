@@ -24,6 +24,9 @@ namespace CarRentalsBlazorEcho
             builder.Services.AddTransient<IOrder, OrderRepository>();
             builder.Services.AddTransient<IUser, UserRepository>();
 
+
+            // Rest of the code
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -34,6 +37,7 @@ namespace CarRentalsBlazorEcho
                 app.UseHsts();
             }
 
+            // Rest of the code
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
@@ -43,6 +47,26 @@ namespace CarRentalsBlazorEcho
                 .AddInteractiveServerRenderMode();
 
             app.Run();
+        }
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddAuthentication("Identity.Application")
+                .AddCookie();
+
+            // Rest of the code
+        }
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            // Rest of the code
+
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/_Host");
+            });
         }
     }
 }
