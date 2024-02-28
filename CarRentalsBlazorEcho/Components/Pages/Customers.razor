@@ -1,0 +1,70 @@
+﻿@page "/customers"
+@using CarRentalsBlazorEcho.Data
+@using CarRentalsBlazorEcho.Models
+
+@inject ICustomer CustomerRepository
+
+<h1>Customers</h1>
+
+<p>
+    <a href="customers/create">Create New</a>
+</p>
+
+<table class="table long">
+    <thead>
+        <tr>
+            <th>
+                Customer Id
+            </th>
+            <th>
+                FirstName
+            </th>
+            <th>
+                LastName
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Password
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in customers)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.FirstName
+                </td>
+                <td>
+                    @item.LastName
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @item.Password
+                </td>
+                <td>
+                    <a href="customers/edit/@item.Id">Edit</a> |
+                    <a href="customers/details/@item.Id">Details</a> |
+                    <a href="customers/delete/@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private IEnumerable<Customer> customers { get; set; } = new List<Customer>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        customers = await CustomerRepository.GetAllAsync();
+    }
+}

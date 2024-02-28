@@ -1,0 +1,57 @@
+﻿@page "/cars"
+@using CarRentalsBlazorEcho.Data
+@using CarRentalsBlazorEcho.Models
+@inject ICar CarRepository
+
+<h1>Cars</h1>
+
+<p>
+    <a href="cars/create">Create New</a>
+</p>
+
+<table class="table long">
+    <thead>
+        <tr>
+            <th>
+                Car Id
+            </th>
+            <th>
+                Price/Day
+            </th>
+            <th>
+                Model
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in cars)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Price
+                </td>
+                <td>
+                    @item.Model
+                </td>
+                <td>
+                    <a href="cars/edit/@item.Id">Edit</a> |
+                    <a href="cars/details/@item.Id">Details</a> |
+                    <a href="cars/delete/@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private IEnumerable<Car> cars { get; set; } = new List<Car>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        cars = await CarRepository.GetAllAsync();
+    }
+}

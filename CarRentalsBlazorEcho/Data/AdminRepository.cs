@@ -12,7 +12,7 @@ namespace CarRentalsBlazorEcho.Data
         }
         public async Task <IEnumerable<Admin>> GetAllAsync()
         {
-            return await (Task<IEnumerable<Admin>>)_context.Admins.OrderBy(n => n.Id);
+            return await _context.Admins.OrderBy(n => n.Id).ToListAsync();
         }
         public async Task <Admin> GetByIdAsync(int id)
         {
