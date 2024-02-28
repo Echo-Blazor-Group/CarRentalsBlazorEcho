@@ -3,7 +3,7 @@
 
 @using CarRentalsBlazorEcho.Models
 @using CarRentalsBlazorEcho.Data
-@inject IUser userRep;
+@inject ICustomer userRep;
 <h5>ShowAllUsers</h5>
 
 @if(users is not null && users.Any())
@@ -18,7 +18,7 @@
             @foreach (var user in users)
             {
                 <tr>
-                    <td>@user.UserId</td>
+                    <td>@user.Id</td>
                 </tr>
             }
         </tbody>
@@ -30,7 +30,7 @@ else
 }
 
 @code {
-    List<User> users;
+    List<Customer> users;
 
     protected override async Task OnInitializedAsync()
     {

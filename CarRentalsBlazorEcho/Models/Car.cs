@@ -1,11 +1,23 @@
-﻿namespace CarRentalsBlazorEcho.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CarRentalsBlazorEcho.Models
 {
     public class Car
     {
-        public int CarId { get; set; }
-        public Car()
-        {
+        [Key]
+        public int Id { get; set; }
 
-        }
+        [Required]
+        public string Brand { get; set; }
+
+        [Required]
+        public string Model { get; set; }
+
+        [Required]
+        public int Price { get; set; }
+
+        public List<CarCategory> CarCategory { get; set; }
+        public List<Booking> Bookings { get; set; }
+
     }
 }

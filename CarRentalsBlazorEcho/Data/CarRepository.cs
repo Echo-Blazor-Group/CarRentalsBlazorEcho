@@ -12,11 +12,11 @@ namespace CarRentalsBlazorEcho.Data
         }
         public async Task <IEnumerable<Car>> GetAllAsync()
         {
-            return await (Task<IEnumerable<Car>>)_context.Cars.OrderBy(c => c.CarId);
+            return await (Task<IEnumerable<Car>>)_context.Cars.OrderBy(c => c.Id);
         }
         public async Task <Car> GetByIdAsync(int id)
         {
-            return await _context.Cars.SingleOrDefaultAsync(s => s.CarId == id);
+            return await _context.Cars.SingleOrDefaultAsync(s => s.Id == id);
         }
         public async Task AddAsync(Car car)
         {

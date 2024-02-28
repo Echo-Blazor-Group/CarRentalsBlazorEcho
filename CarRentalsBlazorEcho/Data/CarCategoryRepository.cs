@@ -3,32 +3,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalsBlazorEcho.Data
 {
-    public class CarModelRepository : ICarModel
+    public class CarCategoryRepository : ICarCategory
     {
         private readonly ApplicationDbContext _context;
-        public CarModelRepository(ApplicationDbContext context)
+        public CarCategoryRepository(ApplicationDbContext context)
         {
             _context = context;
         }
-        public async Task<IEnumerable<CarModel>> GetAllAsync()
+        public async Task<IEnumerable<CarCategory>> GetAllAsync()
         {
-            return await (Task<IEnumerable<CarModel>>)_context.CarModels.OrderBy(c => c.CarModelId);
+            return await (Task<IEnumerable<CarCategory>>)_context.CarModels.OrderBy(c => c.Id);
         }
-        public async Task<CarModel> GetByIdAsync(int id)
+        public async Task<CarCategory> GetByIdAsync(int id)
         {
-            return await _context.CarModels.SingleOrDefaultAsync(s => s.CarModelId == id);
+            return await _context.CarModels.SingleOrDefaultAsync(s => s.Id == id);
         }
-        public async Task AddAsync(CarModel model)
+        public async Task AddAsync(CarCategory model)
         {
             _context.CarModels.Add(model);
             await _context.SaveChangesAsync();
         }
-        public async Task UpdateAsync(CarModel model)
+        public async Task UpdateAsync(CarCategory model)
         {
             _context.CarModels.Update(model);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteAsync(CarModel model)
+        public async Task DeleteAsync(CarCategory model)
         {
             _context.CarModels.Remove(model);
             await _context.SaveChangesAsync();
