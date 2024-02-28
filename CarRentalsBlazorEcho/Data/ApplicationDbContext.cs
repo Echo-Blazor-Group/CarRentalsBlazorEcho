@@ -7,7 +7,7 @@ namespace CarRentalsBlazorEcho.Data
     {
         public DbSet<Car> Cars { get; set; }
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<CarModel> CarModels { get; set; }
+        public DbSet<CarCategory> CarCategories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet <User> Users { get; set; }
 

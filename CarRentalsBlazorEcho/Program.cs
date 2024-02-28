@@ -20,7 +20,7 @@ namespace CarRentalsBlazorEcho
 
             builder.Services.AddTransient<IAdmin, AdminRepository>();
             builder.Services.AddTransient<ICar, CarRepository>();
-            builder.Services.AddTransient<ICarModel, CarModelRepository>();
+            builder.Services.AddTransient<ICarCategory, CarCategoryRepository>();
             builder.Services.AddTransient<IOrder, OrderRepository>();
             builder.Services.AddTransient<IUser, UserRepository>();
 

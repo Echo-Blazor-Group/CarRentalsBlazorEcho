@@ -1,0 +1,75 @@
+﻿@page "/Cars"
+@using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Data
+@inject NavigationManager NavigationManager
+@inject ICar _carRep
+@rendermode InteractiveAuto
+
+<h3>Cars</h3>
+
+<button @onclick="GoToAddCarPage">Add New Car</button>
+
+@if (cars != null && cars.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Car Category</th>
+                <th>Price</th>
+                <th>Available</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var car in cars)
+            {
+                <tr>
+                    <td>@car.CarId</td>
+                    <td>@car.Brand</td>
+                    <td>@car.Model</td>
+                    <td>@car.CarCategoryId</td>
+                    <td>@car.Price</td>
+                    <td>@car.Available</td>
+                    <td>
+                        <button @onclick="() => CarDetails(car)">Details</button>
+                        <button @onclick="() => EditCar(car)">Edit</button>
+                        <button @onclick="() => DeleteCar(car)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No Cars found</p>
+}
+
+@code {
+    List<Car> cars;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cars = (await _carRep.GetAllAsync()).ToList();
+    }
+
+    private void GoToAddCarPage()
+    {
+        NavigationManager.NavigateTo("AddCar");
+    }
+    private async Task DeleteCar(Car car)
+    {
+        await _carRep.DeleteAsync(car);
+        cars.Remove(car);
+    }
+    private void EditCar(Car car)
+    {
+        NavigationManager.NavigateTo($"/EditCar/{car.CarId}");
+    }
+    private void CarDetails(Car car)
+    {
+        NavigationManager.NavigateTo($"/CarDetails/{car.CarId}");
+    }
+}
