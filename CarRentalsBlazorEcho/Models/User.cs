@@ -7,5 +7,6 @@
         {
 
         }
+        public List<Order> Orders { get; set; }
     }
 }
