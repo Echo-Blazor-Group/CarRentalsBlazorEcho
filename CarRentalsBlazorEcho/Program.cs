@@ -1,5 +1,6 @@
 using CarRentalsBlazorEcho.Components;
 using CarRentalsBlazorEcho.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalsBlazorEcho
@@ -14,7 +15,19 @@ namespace CarRentalsBlazorEcho
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.Name = "auth_token";
+                    options.LoginPath = "/Login";
+                    options.Cookie.MaxAge = TimeSpan.FromMinutes(15);
+                    options.AccessDeniedPath = "/AccessDenied";
+                });
+            builder.Services.AddAuthentication();
+            builder.Services.AddCascadingAuthenticationState();
+
             string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CarRentalsBlazor;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
 
@@ -26,7 +39,6 @@ namespace CarRentalsBlazorEcho
 
 
             // Rest of the code
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -47,26 +59,6 @@ namespace CarRentalsBlazorEcho
                 .AddInteractiveServerRenderMode();
 
             app.Run();
-        }
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddAuthentication("Identity.Application")
-                .AddCookie();
-
-            // Rest of the code
-        }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            // Rest of the code
-
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapBlazorHub();
-                endpoints.MapFallbackToPage("/_Host");
-            });
         }
     }
 }
