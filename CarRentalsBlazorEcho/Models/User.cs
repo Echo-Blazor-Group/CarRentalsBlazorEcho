@@ -21,6 +21,9 @@ namespace CarRentalsBlazorEcho.Models
         public User()
         {
 
+        }
+        
+
         public List<Order> Orders { get; set; }
     }
 }

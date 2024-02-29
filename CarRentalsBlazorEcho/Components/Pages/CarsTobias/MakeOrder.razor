@@ -1,7 +1,8 @@
-﻿@page "/Cars/MakeOrder/{carId:int}"
+﻿@page "/CarsTobias/MakeOrder/{carId:int}"
 @using CarRentalsBlazorEcho.Data
 @using CarRentalsBlazorEcho.Models
 @inject IOrder OrderRepository
+@inject ICar CarRepository
 @inject NavigationManager NavigationManager
 @rendermode InteractiveAuto
 
