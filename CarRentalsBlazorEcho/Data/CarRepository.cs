@@ -33,5 +33,9 @@ namespace CarRentalsBlazorEcho.Data
             _context.Cars.Remove(car);
             await _context.SaveChangesAsync();
         }
+        public async Task<IEnumerable<Car>> GetByCategoryAsync(int categoryId)
+        {
+            return await _context.Cars.Where(c => c.CarCategoryId == categoryId).ToListAsync();
+        }
     }
 }
