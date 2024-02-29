@@ -1,0 +1,44 @@
+﻿@page "/Orders"
+@using CarRentalsBlazorEcho.Data
+@using CarRentalsBlazorEcho.Models
+@inject IOrder OrderRepository
+
+<h3>Oredrs</h3>
+
+<table class="table long">
+    <thead>
+        <tr>
+            <th>CarId</th>
+            <th>CustomerId</th>
+            <th>StartDate</th>
+            <th>EndDate</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in orders)
+        {
+            <tr>
+                <td>@item.CarId</td>
+                <td>@item.CustomerId</td>
+                <td>@item.StartDate</td>
+                <td>@item.EndDate</td>
+                <td>
+                    <a href="edit/@item.OrderId">Edit</a> |
+                    <a href="details/@item.OrderId">Details</a> |
+                    <a href="delete/@item.OrderId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private IEnumerable<Order> orders { get; set; } = new List<Order>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var _orders = await OrderRepository.GetAllAsync().ConfigureAwait(false);
+        orders = _orders.ToList();
+    }
+}
