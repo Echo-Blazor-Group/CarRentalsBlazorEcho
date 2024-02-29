@@ -18,6 +18,8 @@ namespace CarRentalsBlazorEcho
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
                     options.Cookie.Name = "auth_token";
                     options.LoginPath = "/Login";
                     options.LogoutPath = "/Logout";
@@ -27,12 +29,13 @@ namespace CarRentalsBlazorEcho
             builder.Services.AddAuthentication();
             builder.Services.AddCascadingAuthenticationState();
 
+
             string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CarRentalsBlazor;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
 
-            builder.Services.AddTransient<IAdmin, AdminRepository>();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddTransient<ICar, CarRepository>();
             builder.Services.AddTransient<ICarModel, CarModelRepository>();
             builder.Services.AddTransient<IOrder, OrderRepository>();

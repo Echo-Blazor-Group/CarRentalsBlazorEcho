@@ -15,7 +15,7 @@
     <EditForm Model="Model" OnValidSubmit="Autenticate" FormName="LoginForm">
         <DataAnnotationsValidator />
         <div>
-            <h3>LOGIN</h3>
+            <h3>Login</h3>
         </div>
         <div>
             <label>Email</label>
@@ -50,7 +50,7 @@
     private async Task Autenticate()
     {
         var userAcc = context.Users.Where(x => x.Email == Model.Email).FirstOrDefault();
-        if (userAcc is null || userAcc.Password != Model.Password)
+        if (userAcc == null || userAcc.Password != Model.Password)
         {
             errorMessage = "invalid User Name or Password";
             return;

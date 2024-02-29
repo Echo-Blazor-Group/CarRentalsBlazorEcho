@@ -1,12 +1,26 @@
 ﻿@page "/"
+@inject IHttpContextAccessor HttpContextAccessor
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, And welcome to Car Rentals</h1>
 
-Welcome to your new app.
 
-<ShowAllUsers>
+    <p>@UserName</p>
 
 
-</ShowAllUsers>
+@code{
+    public string? currentUserCookieValue { get; set;}
+    private string UserName { get; set; }
+
+    protected override async void OnInitialized() {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        UserName = user.Identity.Name;
+        currentUserCookieValue = HttpContextAccessor.HttpContext.Request.Cookies["auth_token"];
+    }
+}
+
+<ShowAllUsers> </ShowAllUsers>
