@@ -20,6 +20,7 @@ namespace CarRentalsBlazorEcho
                 {
                     options.Cookie.Name = "auth_token";
                     options.LoginPath = "/Login";
+                    options.LogoutPath = "/Logout";
                     options.Cookie.MaxAge = TimeSpan.FromMinutes(15);
                     options.AccessDeniedPath = "/AccessDenied";
                 });

@@ -6,7 +6,7 @@
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
-@* @inject IUser userRep; *@
+@inject IUser userRep;  
 @inject ApplicationDbContext context;
 @inject NavigationManager navigationManager 
 
@@ -30,6 +30,7 @@
         <div>
             <span class="text-danger"></span>
         </div>
+        <hr />
         <div>
             <button type="submit" class="btn btn-primary">Login</button>
         </div>
@@ -63,5 +64,7 @@
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);
         await HttpContext.SignInAsync(principal);
+
+        navigationManager.NavigateTo("/");
     }
 }
