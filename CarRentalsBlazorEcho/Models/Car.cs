@@ -5,7 +5,7 @@ namespace CarRentalsBlazorEcho.Models
     public class Car
     {
         [Key]
-        public int Id { get; set; }
+        public int CarId { get; set; }
 
         [Required]
         public string Brand { get; set; }
@@ -16,8 +16,8 @@ namespace CarRentalsBlazorEcho.Models
         [Required]
         public int Price { get; set; }
 
-        public List<CarCategory> CarCategory { get; set; }
-        public List<Booking> Bookings { get; set; }
+        public List<CarModel> CarModels { get; set; }
+        public List<Order> Orders { get; set; }
 
     }
 }

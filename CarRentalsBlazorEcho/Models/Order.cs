@@ -2,10 +2,10 @@
 
 namespace CarRentalsBlazorEcho.Models
 {
-    public class Booking
+    public class Order
     {
         [Key]
-        public int Id { get; set; }
+        public int OrderId { get; set; }
 
         [Required]
         public int CarId { get; set; }
@@ -13,7 +13,7 @@ namespace CarRentalsBlazorEcho.Models
 
         [Required]
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
+        public User User { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

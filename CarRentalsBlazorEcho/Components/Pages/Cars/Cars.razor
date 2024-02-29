@@ -1,13 +1,9 @@
-﻿@page "/cars"
+﻿@page "/Cars/Cars"
 @using CarRentalsBlazorEcho.Data
 @using CarRentalsBlazorEcho.Models
 @inject ICar CarRepository
 
 <h1>Cars</h1>
-
-<p>
-    <a href="cars/create">Create New</a>
-</p>
 
 <table class="table long">
     <thead>
@@ -29,7 +25,7 @@
         {
             <tr>
                 <td>
-                    @item.Id
+                    @item.CarId
                 </td>
                 <td>
                     @item.Price
@@ -38,9 +34,7 @@
                     @item.Model
                 </td>
                 <td>
-                    <a href="cars/edit/@item.Id">Edit</a> |
-                    <a href="cars/details/@item.Id">Details</a> |
-                    <a href="cars/delete/@item.Id">Delete</a>
+                    <a href="Cars/MakeOrder/@item.CarId">Make Order</a>
                 </td>
             </tr>
         }

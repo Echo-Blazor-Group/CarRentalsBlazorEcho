@@ -6,10 +6,9 @@ namespace CarRentalsBlazorEcho.Data
     public class ApplicationDbContext:DbContext
     {
         public DbSet<Car> Cars { get; set; }
-        public DbSet<Admin> Admins { get; set; }
-        public DbSet<CarCategory> CarModels { get; set; }
-        public DbSet<Booking> Bookings { get; set; }
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<CarModel> CarModels { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<CarPicture> CarPictures { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -19,14 +18,14 @@ namespace CarRentalsBlazorEcho.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Booking>()
-                .HasOne(r => r.Customer)
-                .WithMany(c => c.Bookings)
+            modelBuilder.Entity<Order>()
+                .HasOne(r => r.User)
+                .WithMany(c => c.Orders)
                 .HasForeignKey(r => r.CustomerId);
 
-            modelBuilder.Entity<Booking>()
+            modelBuilder.Entity<Order>()
                 .HasOne(r => r.Car)
-                .WithMany(c => c.Bookings)
+                .WithMany(c => c.Orders)
                 .HasForeignKey(r => r.CarId);
 
         }

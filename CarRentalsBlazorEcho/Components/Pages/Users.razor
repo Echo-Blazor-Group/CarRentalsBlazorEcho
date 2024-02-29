@@ -1,14 +1,10 @@
-﻿@page "/customers"
+﻿@page "/Users"
 @using CarRentalsBlazorEcho.Data
 @using CarRentalsBlazorEcho.Models
 
-@inject ICustomer CustomerRepository
+@inject IUser UserRepository
 
-<h1>Customers</h1>
-
-<p>
-    <a href="customers/create">Create New</a>
-</p>
+<h1>Users</h1>
 
 <table class="table long">
     <thead>
@@ -32,11 +28,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in customers)
+        @foreach (var item in users)
         {
             <tr>
                 <td>
-                    @item.Id
+                    @item.UserId
                 </td>
                 <td>
                     @item.FirstName
@@ -51,9 +47,9 @@
                     @item.Password
                 </td>
                 <td>
-                    <a href="customers/edit/@item.Id">Edit</a> |
-                    <a href="customers/details/@item.Id">Details</a> |
-                    <a href="customers/delete/@item.Id">Delete</a>
+                    <a href="users/edit/@item.UserId">Edit</a> |
+                    <a href="users/details/@item.UserId">Details</a> |
+                    <a href="users/delete/@item.UserId">Delete</a>
                 </td>
             </tr>
         }
@@ -61,10 +57,10 @@
 </table>
 
 @code {
-    private IEnumerable<Customer> customers { get; set; } = new List<Customer>();
+    private IEnumerable<User> users { get; set; } = new List<User>();
 
     protected override async Task OnInitializedAsync()
     {
-        customers = await CustomerRepository.GetAllAsync();
+        users = await UserRepository.GetAllAsync();
     }
 }

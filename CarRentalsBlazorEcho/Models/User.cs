@@ -2,10 +2,15 @@
 
 namespace CarRentalsBlazorEcho.Models
 {
-    public class Admin
+    public class User
     {
-        [Key]
-        public int Id { get; set; }
+        public int UserId { get; set; }
+
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
 
         [Required]
         [EmailAddress]
@@ -13,5 +18,7 @@ namespace CarRentalsBlazorEcho.Models
 
         [Required]
         public string Password { get; set; }
+
+        public List<Order> Orders { get; set; }
     }
 }
