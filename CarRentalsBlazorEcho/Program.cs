@@ -18,7 +18,6 @@ namespace CarRentalsBlazorEcho
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
 
-            builder.Services.AddTransient<IAdmin, AdminRepository>();
             builder.Services.AddTransient<ICar, CarRepository>();
             builder.Services.AddTransient<ICarCategory, CarCategoryRepository>();
             builder.Services.AddTransient<IOrder, OrderRepository>();
