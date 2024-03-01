@@ -1,23 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarRentalsBlazorEcho.Models
 {
     public class Car
     {
-        [Key]
         public int CarId { get; set; }
-
         [Required]
         public string Brand { get; set; }
-
         [Required]
         public string Model { get; set; }
-
+        public int CarCategoryId { get; set; }
         [Required]
         public int Price { get; set; }
+        public bool Available { get; set; }
 
-        public List<CarModel> CarModels { get; set; }
-        public List<Order> Orders { get; set; }
+        public Car()
+        {
 
+        }
     }
 }

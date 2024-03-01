@@ -2,12 +2,15 @@
 
 namespace CarRentalsBlazorEcho.Models
 {
-    public class CarModel
+    public class CarCategory
     {
-        [Key]
-        public int CarModelId { get; set; }
-
+        public int Id { get; set; }
         [Required]
         public string CategoryName { get; set; }
+
+        public CarCategory()
+        {
+
+        }
     }
 }
