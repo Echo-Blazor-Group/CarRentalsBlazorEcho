@@ -1,5 +1,6 @@
 using CarRentalsBlazorEcho.Components;
 using CarRentalsBlazorEcho.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalsBlazorEcho
@@ -14,16 +15,34 @@ namespace CarRentalsBlazorEcho
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                    options.Cookie.Name = "auth_token";
+                    options.LoginPath = "/Login";
+                    options.LogoutPath = "/Logout";
+                    options.Cookie.MaxAge = TimeSpan.FromMinutes(15);
+                    options.AccessDeniedPath = "/AccessDenied";
+                });
+            builder.Services.AddAuthentication();
+            builder.Services.AddCascadingAuthenticationState();
+
+
             string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CarRentalsBlazor;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
 
-            builder.Services.AddTransient<IAdmin, AdminRepository>();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddTransient<ICar, CarRepository>();
-            builder.Services.AddTransient<ICarModel, CarModelRepository>();
+            builder.Services.AddTransient<ICarCategory, CarCategoryRepository>();
             builder.Services.AddTransient<IOrder, OrderRepository>();
             builder.Services.AddTransient<IUser, UserRepository>();
 
+
+            // Rest of the code
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -34,6 +53,7 @@ namespace CarRentalsBlazorEcho
                 app.UseHsts();
             }
 
+            // Rest of the code
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

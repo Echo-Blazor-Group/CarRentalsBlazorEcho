@@ -1,4 +1,6 @@
 ﻿using CarRentalsBlazorEcho.Models;
+using IdentityModel;
+
 
 namespace CarRentalsBlazorEcho.Data
 {
@@ -9,5 +11,8 @@ namespace CarRentalsBlazorEcho.Data
         Task AddAsync(User user);
         Task UpdateAsync (User user);
         Task DeleteAsync (User user);
+
+        Task<User> GetByCookieAsync(User Principal);
+
     }
 }

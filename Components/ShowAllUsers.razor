@@ -4,9 +4,7 @@
 @using CarRentalsBlazorEcho.Models
 @using CarRentalsBlazorEcho.Data
 @inject IUser userRep;
-
 <h5>ShowAllUsers</h5>
-
 
 @if(users is not null && users.Any())
 {
@@ -32,7 +30,7 @@ else
 }
 
 @code {
-      List<User> users;
+    List<User> users;
 
     protected override async Task OnInitializedAsync()
     {

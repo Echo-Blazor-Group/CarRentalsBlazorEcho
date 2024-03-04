@@ -12,7 +12,7 @@ namespace CarRentalsBlazorEcho.Data
         }
         public async Task<IEnumerable<Order>> GetAllAsync()
         {
-            return await (Task<IEnumerable<Order>>)_context.Orders.OrderBy(s => s.OrderId);
+            return await _context.Orders.OrderBy(s => s.OrderId).ToListAsync();
         }
         public async Task <Order> GetByIdAsync(int id)
         {
@@ -25,7 +25,7 @@ namespace CarRentalsBlazorEcho.Data
         }
         public async Task UpdateAsync(Order order)
         {
-            _context.Orders.Add(order);
+            _context.Orders.Update(order);
             await _context.SaveChangesAsync();
         }
         public async Task DeleteAsync(Order order)
