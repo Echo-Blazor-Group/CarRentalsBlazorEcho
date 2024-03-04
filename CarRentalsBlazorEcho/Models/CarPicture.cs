@@ -10,7 +10,9 @@ namespace CarRentalsBlazorEcho.Models
         [Required]
         [ForeignKey("Car")]
         public int CarId { get; set; }
-        [Required]
+        public virtual Car Car { get; set; }
+
         public string PictureUrl { get; set; }
+
     }
 }

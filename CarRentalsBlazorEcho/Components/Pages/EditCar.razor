@@ -1,0 +1,67 @@
+﻿@page "/EditCar/{carId}"
+@using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Data
+@inject ICar _carRep
+@inject ICarCategory _carCategoryRep
+@inject NavigationManager NavigationManager
+
+<h3>Edit Car</h3>
+
+@if (car != null)
+{
+    <form @onsubmit="UpdateCar">
+        <div>
+            <label for="brand">Brand:</label>
+            <input type="text" id="brand" @bind="car.Brand" required />
+        </div>
+        <div>
+            <label for="model">Model:</label>
+            <input type="text" id="model" @bind="car.Model" required />
+        </div>
+        <div>
+            <label for="price">Price:</label>
+            <input type="number" id="price" @bind="car.Price" required />
+        </div>
+        <div>
+            <label for="carCategory">Car Category:</label>
+            <select id="carCategory" @bind="car.CarCategoryId">
+                @foreach (var category in carCategories)
+                {
+                    <option value="@category.Id">@category.CategoryName</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label for="available">Available:</label>
+            <input type="checkbox" id="available" @bind="car.Available" />
+        </div>
+        <button type="submit">Update</button>
+    </form>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    Car car;
+
+    [Parameter]
+    public string CarId { get; set; }
+    List<CarCategory> carCategories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(CarId) && int.TryParse(CarId, out int id))
+        {
+            car = await _carRep.GetByIdAsync(id);
+        }
+        carCategories = (await _carCategoryRep.GetAllAsync()).ToList();
+    }
+
+    private async Task UpdateCar()
+    {
+        await _carRep.UpdateAsync(car);
+        NavigationManager.NavigateTo("/Cars");
+    }
+}
