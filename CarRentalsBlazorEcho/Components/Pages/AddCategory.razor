@@ -11,7 +11,7 @@
 <p>
     This is for Blazor CRUD development for CarCategory.
 </p>
-@* @if(carModels is not null && carModels.Any())
+@* @if(carCategories is not null && carCategories.Any())
 {
     <table class="tabe">
         <thead>
@@ -22,10 +22,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var carModel  in carModels)
+            @foreach(var carCategory  in carCategories)
             {
                 <tr>
-                    <td>@carModel.CategoryName</td>
+                    <td>@carCategory.CategoryName</td>
                 </tr>
             }
         </tbody>
@@ -67,7 +67,7 @@
     protected override void OnInitialized() => Category ??= new();
     public string ErrorMessage { get; set; } = string.Empty;
     public string SuccessMessage { get; set; } = string.Empty;
-    List<CarCategory>? carModels;
+    List<CarCategory>? carCategories;
 
     private async Task Submit()
     {
