@@ -34,9 +34,5 @@ namespace CarRentalsBlazorEcho.Data
             await _context.SaveChangesAsync();
         }
 
-        Task<User> IUser.GetByCookieAsync(User Principal)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

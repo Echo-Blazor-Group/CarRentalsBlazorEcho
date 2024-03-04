@@ -18,8 +18,6 @@ namespace CarRentalsBlazorEcho
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.Cookie.HttpOnly = true;
-                    options.Cookie.SameSite = SameSiteMode.Lax;
                     options.Cookie.Name = "auth_token";
                     options.LoginPath = "/Login";
                     options.LogoutPath = "/Logout";
@@ -35,7 +33,7 @@ namespace CarRentalsBlazorEcho
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
 
-            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+           
             builder.Services.AddTransient<ICar, CarRepository>();
             builder.Services.AddTransient<ICarCategory, CarCategoryRepository>();
             builder.Services.AddTransient<IOrder, OrderRepository>();

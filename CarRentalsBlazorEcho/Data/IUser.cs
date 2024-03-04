@@ -12,7 +12,7 @@ namespace CarRentalsBlazorEcho.Data
         Task UpdateAsync (User user);
         Task DeleteAsync (User user);
 
-        Task<User> GetByCookieAsync(User Principal);
+
 
     }
 }
