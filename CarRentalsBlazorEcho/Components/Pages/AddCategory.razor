@@ -3,7 +3,7 @@
 @rendermode InteractiveAuto
 @using CarRentalsBlazorEcho.Models
 @using CarRentalsBlazorEcho.Data
-@inject ICarModel rep;
+@inject ICarCategory rep;
 @inject ApplicationDbContext _context;
 
 <h3>Car Categories</h3>
@@ -63,11 +63,11 @@
 
 @code {
     [SupplyParameterFromForm]
-    public CarModel? Category { get; set; }
+    public CarCategory? Category { get; set; }
     protected override void OnInitialized() => Category ??= new();
     public string ErrorMessage { get; set; } = string.Empty;
     public string SuccessMessage { get; set; } = string.Empty;
-    List<CarModel>? carModels;
+    List<CarCategory>? carModels;
 
     private async Task Submit()
     {
@@ -77,7 +77,7 @@
         }
         else
         {
-            await _context.CarModels.AddAsync(Category);
+            await _context.CarCategories.AddAsync(Category);
             this.SuccessMessage = "Car category added succesfully.";
         }
     }
