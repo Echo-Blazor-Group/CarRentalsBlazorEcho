@@ -15,14 +15,17 @@ namespace CarRentalsBlazorEcho
                 .AddInteractiveServerComponents();
 
             string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CarRentalsBlazor;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
+
+            //builder.Services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             builder.Services.AddTransient<IAdmin, AdminRepository>();
             builder.Services.AddTransient<ICar, CarRepository>();
             builder.Services.AddTransient<ICarModel, CarModelRepository>();
             builder.Services.AddTransient<IOrder, OrderRepository>();
             builder.Services.AddTransient<IUser, UserRepository>();
+            builder.Services.AddTransient<ICarPicture, CarPictureRepository>();
 
             var app = builder.Build();
 
