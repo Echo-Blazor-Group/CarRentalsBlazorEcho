@@ -15,19 +15,5 @@ namespace CarRentalsBlazorEcho.Data
         {
 
         }
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Order>()
-        //        .HasOne(r => r.User)
-        //        .WithMany(c => c.Orders)
-        //        .HasForeignKey(r => r.CustomerId);
-
-        //    modelBuilder.Entity<Order>()
-        //        .HasOne(r => r.Car)
-        //        .WithMany(c => c.Orders)
-        //        .HasForeignKey(r => r.CarId);
-
-        //}
     }
 }

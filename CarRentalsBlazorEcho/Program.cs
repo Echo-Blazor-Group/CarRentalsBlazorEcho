@@ -2,6 +2,8 @@ using CarRentalsBlazorEcho.Components;
 using CarRentalsBlazorEcho.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.Mime.MediaTypeNames;
+using System;
 
 namespace CarRentalsBlazorEcho
 {
