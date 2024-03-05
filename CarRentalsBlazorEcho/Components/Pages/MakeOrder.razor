@@ -1,4 +1,4 @@
-﻿@page "/CarsTobias/MakeOrder/{carId:int}"
+﻿@page "/MakeOrder/{carId:int}"
 @using CarRentalsBlazorEcho.Data
 @using CarRentalsBlazorEcho.Models
 @inject IOrder OrderRepository
@@ -11,7 +11,7 @@
 <form @onsubmit="CreateOrder">
     <div class="form-group">
         <label for="customerId">Customer Id:</label>
-        <input type="text" id="customerId" @bind="newOrder.CustomerId" class="form-control" />
+        <input type="text" id="customerId" @bind="newOrder.UserId" class="form-control" />
     </div>
     <div class="form-group">
         <label for="startDate">Start Date:</label>

@@ -12,7 +12,7 @@ namespace CarRentalsBlazorEcho.Models
         public virtual Car Car { get; set; }
 
         [Required]
-        public int CustomerId { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
 
         [Required]
