@@ -1,0 +1,58 @@
+﻿@attribute [StreamRendering]
+@page "/AddCarPicture/{PathParam}"
+@rendermode InteractiveAuto
+@using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Data
+@inject ICarPicture CarPictures;
+@inject ApplicationDbContext _context;
+
+<h3>CarPictureCRUD</h3>
+
+<p>
+    This is for Blazor CRUD development for CarPictures.
+</p>
+
+<h3>
+    Add:
+</h3>
+
+<form method="post" @onsubmit="Submit" @formname="AddCarPicture">
+    <div>
+        <label>
+            Picture Url:
+            <InputText @bind-Value="Picture!.PictureUrl" />
+        </label>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+@if (this.ErrorMessage != string.Empty)
+{
+    <div class="alert alert-danger">
+        <strong>Error!</strong> @this.ErrorMessage
+    </div>
+    this.ErrorMessage = string.Empty;
+}
+@* <button class="btn btn-outline-primary" @onclick="CreateCarPicture">Add Picture</button>
+ *@
+@code {
+    [Parameter]
+    public int PathParam { get; set; }
+    [SupplyParameterFromForm]
+    public CarPicture? Picture { get; set; }
+    protected override void OnInitialized() => Picture ??= new() { CarId = this.PathParam };
+    public string ErrorMessage { get; set; } = string.Empty;
+
+    private async Task Submit()
+    {
+        if (Picture == null || Picture.PictureUrl == string.Empty)
+        {
+            this.ErrorMessage = "Add car picture failed.";
+        } 
+        else
+        {
+            await _context.CarPictures.AddAsync(Picture);
+        }
+    }
+}

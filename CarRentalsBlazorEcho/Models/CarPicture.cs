@@ -1,12 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarRentalsBlazorEcho.Models
 {
     public class CarPicture
     {
         [Key]
-        public int CarPictureId { get; set; }
-
+        public int Id { get; set; }
+        [Required]
+        [ForeignKey("Car")]
         public int CarId { get; set; }
         public virtual Car Car { get; set; }
 

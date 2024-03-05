@@ -1,0 +1,84 @@
+﻿@attribute [StreamRendering]
+@page "/addcategory"
+@rendermode InteractiveAuto
+@using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Data
+@inject ICarCategory rep;
+@inject ApplicationDbContext _context;
+
+<h3>Car Categories</h3>
+
+<p>
+    This is for Blazor CRUD development for CarCategory.
+</p>
+@* @if(carCategories is not null && carCategories.Any())
+{
+    <table class="tabe">
+        <thead>
+            <tr>
+                <th>
+                    Categories
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var carCategory  in carCategories)
+            {
+                <tr>
+                    <td>@carCategory.CategoryName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+} *@
+<h3>
+    Add:
+</h3>
+
+<form method="post" @onsubmit="Submit" @formname="AddCarCategory">
+    <div>
+        <label>
+            Category name:
+            <InputText @bind-Value="Category!.CategoryName" />
+        </label>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+@if (this.SuccessMessage != string.Empty)
+{
+    <div class="alert alert-success">
+        <strong>Success!</strong> @this.SuccessMessage
+    </div>
+    this.SuccessMessage = string.Empty;
+}
+@if (this.ErrorMessage != string.Empty)
+{
+    <div class="alert alert-danger">
+        <strong>Error!</strong> @this.ErrorMessage
+    </div>
+    this.ErrorMessage = string.Empty;
+}
+
+@code {
+    [SupplyParameterFromForm]
+    public CarCategory? Category { get; set; }
+    protected override void OnInitialized() => Category ??= new();
+    public string ErrorMessage { get; set; } = string.Empty;
+    public string SuccessMessage { get; set; } = string.Empty;
+    List<CarCategory>? carCategories;
+
+    private async Task Submit()
+    {
+        if (Category == null || Category.CategoryName == string.Empty)
+        {
+            this.ErrorMessage = "Add car category failed.";
+        }
+        else
+        {
+            await _context.CarCategories.AddAsync(Category);
+            this.SuccessMessage = "Car category added succesfully.";
+        }
+    }
+}
