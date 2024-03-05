@@ -11,7 +11,7 @@
 <form @onsubmit="CreateOrder">
     <div class="form-group">
         <label for="customerId">Customer Id:</label>
-        <input type="text" id="customerId" @bind="newOrder.CustomerId" class="form-control" />
+        <input type="text" id="customerId" @bind="newOrder.UserId" class="form-control" />
     </div>
     <div class="form-group">
         <label for="startDate">Start Date:</label>
@@ -33,8 +33,15 @@
 
     private async Task CreateOrder()
     {
-        newOrder.CarId = carId;
-        await OrderRepository.AddAsync(newOrder);
-        NavigationManager.NavigateTo("/Orders");
+        try
+        {
+            newOrder.CarId = carId;
+            await OrderRepository.AddAsync(newOrder);
+            NavigationManager.NavigateTo("/Orders");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
     }
 }

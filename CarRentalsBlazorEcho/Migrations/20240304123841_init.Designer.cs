@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRentalsBlazorEcho.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240229133604_aftermerge")]
-    partial class aftermerge
+    [Migration("20240304123841_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -103,9 +103,6 @@ namespace CarRentalsBlazorEcho.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
                     b.Property<int>("CarId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")

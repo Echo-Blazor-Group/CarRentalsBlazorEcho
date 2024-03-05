@@ -42,6 +42,7 @@ namespace CarRentalsBlazorEcho
             builder.Services.AddTransient<IUser, UserRepository>();
 
 
+
             // Rest of the code
             var app = builder.Build();
 
@@ -55,6 +56,7 @@ namespace CarRentalsBlazorEcho
 
             // Rest of the code
             app.UseHttpsRedirection();
+
 
             app.UseStaticFiles();
             app.UseAntiforgery();
