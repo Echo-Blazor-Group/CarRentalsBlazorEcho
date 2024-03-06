@@ -1,0 +1,44 @@
+﻿@page "/OrderManagement/Delete/{orderId:int}"
+@using CarRentalsBlazorEcho.Data
+@using CarRentalsBlazorEcho.Models
+@inject IOrder OrderRepository
+@inject NavigationManager NavigationManager
+
+<h4>Delete This Order?</h4>
+
+@if (order != null)
+{
+    <p>Ordernr:    @order.OrderId</p>
+    <p>Customernr: @order.UserId</p>
+    <p>Carnr:      @order.CarId</p>
+    <p>Date:       @order.StartDate - @order.EndDate</p>
+}
+else
+{
+    <p>Loading...</p>
+}
+<button class="btn btn-primary" @onclick="DeleteOrder">Delete</button>
+<button class="btn btn-primary" @onclick="Return">Return</button>
+
+@code {
+    public Order order;
+
+    [Parameter]
+    public int orderId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        order = await OrderRepository.GetByIdAsync(orderId);
+    }
+
+    private void Return()
+    {
+        NavigationManager.NavigateTo("/Orders");
+    }
+
+    private async Task DeleteOrder()
+    {
+        await OrderRepository.DeleteAsync(order);
+        NavigationManager.NavigateTo("/Orders");
+    }
+}

@@ -1,0 +1,77 @@
+﻿@page "/OrderManagement/Edit/{orderId:int}"
+@using CarRentalsBlazorEcho.Data
+@using CarRentalsBlazorEcho.Models
+@inject IUser UserRepository
+@inject IOrder OrderRepository
+@inject ICar CarRepository
+@inject NavigationManager NavigationManager
+
+@rendermode InteractiveAuto
+
+<h3>Edit Order</h3>
+
+@if (order != null)
+{
+    <form @onsubmit="EditOrder">
+        <div class="form-group">
+            <label for="carId">Car Id:</label>
+            <select id="carId" @bind="order.CarId" class="form-control">
+                @foreach (var car in cars)
+                {
+                    <option value="@car.CarId">@car.CarId</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="customerId">Customer Id:</label>
+            <select id="customerId" @bind="order.UserId" class="form-control">
+                @foreach (var user in users)
+                {
+                    <option value="@user.UserId">@user.UserId</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" @bind="order.StartDate" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" @bind="order.EndDate" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+}
+else
+{
+    <p>Loading...</p>
+}
+<button class="btn btn-primary" @onclick="Return">Return</button>
+
+@code {
+    public Order order;
+    private IEnumerable<User> users;
+    private IEnumerable<Car> cars;
+
+    [Parameter]
+    public int orderId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        order = await OrderRepository.GetByIdAsync(orderId);
+        users = await UserRepository.GetAllAsync();
+        cars = await CarRepository.GetAllAsync();
+    }
+
+
+    private async Task EditOrder()
+    {
+        await OrderRepository.UpdateAsync(order);
+        NavigationManager.NavigateTo("/Orders");
+    }
+
+    private void Return()
+    {
+        NavigationManager.NavigateTo("/Orders");
+    }
+}

@@ -1,6 +1,7 @@
 ﻿@page "/MakeOrder/{carId:int}"
 @using CarRentalsBlazorEcho.Data
 @using CarRentalsBlazorEcho.Models
+@inject IUser UserRepository
 @inject IOrder OrderRepository
 @inject ICar CarRepository
 @inject NavigationManager NavigationManager
@@ -8,27 +9,49 @@
 
 <h3>Make Order</h3>
 
-<form @onsubmit="CreateOrder">
-    <div class="form-group">
-        <label for="customerId">Customer Id:</label>
-        <input type="text" id="customerId" @bind="newOrder.UserId" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" @bind="newOrder.StartDate" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" @bind="newOrder.EndDate" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-</form>
+@if (newOrder != null && users != null)
+{
+    <form @onsubmit="CreateOrder">
+        <div class="form-group">
+            <label for="customerId">Customer Id:</label>
+            <select id="customerId" @bind="newOrder.UserId" class="form-control">
+                @foreach (var user in users)
+                {
+                    <option value="@user.UserId">@user.UserId</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" @bind="newOrder.StartDate" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" @bind="newOrder.EndDate" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+}
+else
+{
+    <p>Loading...</p>
+}
 
 @code {
     [Parameter]
     public int carId { get; set; }
+    private IEnumerable<User> users;
 
     private Order newOrder = new Order();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await UserRepository.GetAllAsync();
+
+        newOrder.StartDate = DateTime.Now.Date;
+        newOrder.EndDate = DateTime.Now.Date.AddDays(1);
+    }
 
 
     private async Task CreateOrder()
