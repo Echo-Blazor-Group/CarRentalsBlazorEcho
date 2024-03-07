@@ -1,0 +1,48 @@
+﻿@page "/CarsToPrep"
+
+@using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Data
+@inject ICar _carRep
+@inject IOrder _orderRep
+
+<h3>Select Time Span</h3>
+<div>
+    <label for="startDate">Start Date:</label>
+    <input id="startDate" type="date" @bind="startDate">
+</div>
+<div>
+    <label for="endDate">End Date:</label>
+    <input id="endDate" type="date" @bind="endDate">
+</div>
+<button @onclick="FindCarsWithOrders">Find Cars with Orders</button>
+
+@if (carsWithOrders != null && carsWithOrders.Any())
+{
+    <h3>Cars with Orders</h3>
+    <ul>
+        @foreach (var car in carsWithOrders)
+        {
+            <li>@car.Brand @car.Model</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No cars found in the selected time span</p>
+}
+@code {
+    private DateTime startDate;
+    private DateTime endDate;
+    private List<Car> carsWithOrders;
+
+    private async Task FindCarsWithOrders()
+    {
+        var cars = await _carRep.GetAllAsync();
+        var orders = await _orderRep.GetAllAsync();
+
+        carsWithOrders = (from car in cars
+                                    join order in orders on car.CarId equals order.CarId
+                                    where order.StartDate <= endDate && order.EndDate >= startDate
+                                    select car).ToList();
+    }
+}
