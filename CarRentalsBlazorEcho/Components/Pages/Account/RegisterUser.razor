@@ -1,0 +1,41 @@
+﻿@page "/RegisterUser"
+@using CarRentalsBlazorEcho.Data
+@using CarRentalsBlazorEcho.Models
+@inject NavigationManager NavigationManager
+@inject IUser _userRep
+<h3>RegisterUser</h3>
+
+<form @onsubmit="AddNewUser">
+    <div>
+        <label for="FirstName">First Name:</label>
+        <input type="text" id="FirstName" @bind="newUser.FirstName" required />
+    </div>
+    <div>
+        <label for="LastName">Last Name:</label>
+        <input type="text" id="LastName" @bind="newUser.LastName" required />
+    </div>
+    <div>
+        <label for="Email">Email:</label>
+        <input type="email" id="Email" @bind="newUser.Email" required />
+    </div>
+    <div>
+        <label for="Password">Password:</label>
+        <input type="password" id="Password" @bind="newUser.Password" required />
+    </div>
+    <div>
+        <label for="Role">Role:</label>
+        <input type="text" id="Role" @bind="newUser.Role" required />
+    </div>
+    <button type="submit">Register</button>
+</form>
+
+
+@code {
+    CarRentalsBlazorEcho.Models.User newUser = new CarRentalsBlazorEcho.Models.User();
+
+    private async Task AddNewUser()
+    {
+        await _userRep.AddAsync(newUser);
+        NavigationManager.NavigateTo("Login");
+    }
+}
