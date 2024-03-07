@@ -10,6 +10,7 @@ namespace CarRentalsBlazorEcho.Data
         Task UpdateAsync(Car car);
         Task DeleteAsync(Car car);
         Task<IEnumerable<Car>> GetByCategoryAsync(int categoryId);
-
+        Task<List<Car>> GetAvailableCarsAsync(DateTime startDate, DateTime endDate);
+        Task<List<CarCategory>> GetCarCategoriesAsync();
     }
 }

@@ -1,0 +1,70 @@
+﻿@page "/AvailableCars"
+@using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Data
+@inject ICar _carRep
+
+<h3>Select Time Span</h3>
+<div>
+    <label for="startDate">Start Date:</label>
+    <input id="startDate" type="date" @bind="startDate">
+</div>
+<div>
+    <label for="endDate">End Date:</label>
+    <input id="endDate" type="date" @bind="endDate">
+</div>
+<button @onclick="FindAvailableCars">Find Available Cars</button>
+
+@if (availableCarsByCategory != null && availableCarsByCategory.Any())
+{
+    <h3>Available Cars by Category</h3>
+    @foreach (var categoryGroup in availableCarsByCategory)
+    {
+        <h4>@categoryGroup.Key</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Brand</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var car in categoryGroup.Value)
+                {
+                    <tr>
+                        <td>@car.Model</td>
+                        <td>@car.Brand</td>
+                        <td>@car.Price</td>
+                        <td>
+                            <a href="CarsTobias/MakeOrder/@car.CarId">Make Order</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+else
+{
+    <p>No available cars found in the selected time span.</p>
+}
+
+@code {
+    private DateTime startDate;
+    private DateTime endDate;
+    private Dictionary<string, List<Car>> availableCarsByCategory;
+
+    private async Task FindAvailableCars()
+    {
+        var availableCars = await _carRep.GetAvailableCarsAsync(startDate, endDate);
+        var carCategories = await _carRep.GetCarCategoriesAsync();
+
+        availableCarsByCategory = new Dictionary<string, List<Car>>();
+
+        foreach (var category in carCategories)
+        {
+            var carsInCategory = availableCars.Where(car => car.CarCategoryId == category.Id).ToList();
+            availableCarsByCategory.Add(category.CategoryName, carsInCategory);
+        }
+    }
+}
