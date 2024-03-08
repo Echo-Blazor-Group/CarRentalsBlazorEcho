@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CarRentalsBlazorEcho.Migrations
 {
     /// <inheritdoc />
-    public partial class aftermerge : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,14 +62,14 @@ namespace CarRentalsBlazorEcho.Migrations
                 name: "CarPictures",
                 columns: table => new
                 {
-                    CarPictureId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CarId = table.Column<int>(type: "int", nullable: false),
                     PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CarPictures", x => x.CarPictureId);
+                    table.PrimaryKey("PK_CarPictures", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CarPictures_Cars_CarId",
                         column: x => x.CarId,
@@ -85,7 +85,6 @@ namespace CarRentalsBlazorEcho.Migrations
                     OrderId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CarId = table.Column<int>(type: "int", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)

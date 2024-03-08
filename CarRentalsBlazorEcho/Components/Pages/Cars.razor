@@ -10,6 +10,8 @@
 <h3>Cars</h3>
 
 <button @onclick="GoToAddCarPage">Add New Car</button>
+<button @onclick="GoToCarsToPrepPage">Cars to Prep</button>
+<button @onclick="GoToAvailableCarsPage">Available Cars</button>
 @if(carCategories != null)
 {
     <div>
@@ -82,6 +84,14 @@ else
     private void GoToAddCarPage()
     {
         NavigationManager.NavigateTo("AddCar");
+    }
+    private void GoToCarsToPrepPage()
+    {
+        NavigationManager.NavigateTo("CarsToPrep");
+    }
+    private void GoToAvailableCarsPage()
+    {
+        NavigationManager.NavigateTo("AvailableCars");
     }
 
     private async Task DeleteCar(Car car)

@@ -33,6 +33,7 @@
         <hr />
         <div>
             <button type="submit" class="btn btn-primary">Login</button>
+            <button @onclick="NavigateToRegisterUser" class="btn btn-primary">Register</button>
         </div>
     </EditForm>
 </div>
@@ -66,5 +67,9 @@
         await HttpContext.SignInAsync(principal);
 
         navigationManager.NavigateTo("/");
+    }
+    private void NavigateToRegisterUser()
+    {
+        navigationManager.NavigateTo("RegisterUser");
     }
 }

@@ -37,5 +37,24 @@ namespace CarRentalsBlazorEcho.Data
         {
             return await _context.Cars.Where(c => c.CarCategoryId == categoryId).ToListAsync();
         }
+        public async Task<List<Car>> GetAvailableCarsAsync(DateTime startDate, DateTime endDate)
+        {
+            var availableCars = await _context.Cars
+                .Where(car => car.Available)
+                .ToListAsync();
+
+            var ordersWithinTimeSpan = await _context.Orders
+                .Where(order => order.StartDate <= endDate && order.EndDate >= startDate)
+                .ToListAsync();
+
+            var availableCarIds = ordersWithinTimeSpan.Select(order => order.CarId).ToList();
+
+            return availableCars.Where(car => !availableCarIds.Contains(car.CarId)).ToList();
+        }
+
+        public async Task<List<CarCategory>> GetCarCategoriesAsync()
+        {
+            return await _context.CarCategories.ToListAsync();
+        }
     }
 }
