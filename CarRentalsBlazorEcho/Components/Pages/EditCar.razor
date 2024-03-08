@@ -37,11 +37,13 @@
         </div>
         <button type="submit">Update</button>
     </form>
+    <button @onclick="NavigateToAddCarPicture">Add Picture</button>
 }
 else
 {
     <p>Loading...</p>
 }
+<button class="btn btn-outline-primary" @onclick="NavigateReturn">Return To List</button>
 
 @code {
     Car car;
@@ -63,5 +65,15 @@ else
     {
         await _carRep.UpdateAsync(car);
         NavigationManager.NavigateTo("/Cars");
+    }
+
+    private void NavigateToAddCarPicture()
+    {
+        NavigationManager.NavigateTo($"/AddCarPicture/{car.CarId}");
+    }
+
+    private void NavigateReturn()
+    {
+        NavigationManager.NavigateTo($"/Cars");
     }
 }

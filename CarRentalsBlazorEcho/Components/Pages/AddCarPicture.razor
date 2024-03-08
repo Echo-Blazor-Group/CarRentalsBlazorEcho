@@ -1,20 +1,13 @@
 ﻿@attribute [StreamRendering]
-@page "/AddCarPicture/{PathParam}"
+@page "/AddCarPicture/{CarId:int}"
 @rendermode InteractiveAuto
 @using CarRentalsBlazorEcho.Models
 @using CarRentalsBlazorEcho.Data
-@inject ICarPicture CarPictures;
-@inject ApplicationDbContext _context;
+@inject ICarPicture _CarPictures;
+@inject NavigationManager Navigation;
 
-<h3>CarPictureCRUD</h3>
-
-<p>
-    This is for Blazor CRUD development for CarPictures.
-</p>
-
-<h3>
-    Add:
-</h3>
+<h3>Car Picture</h3>
+<h3>Add:</h3>
 
 <form method="post" @onsubmit="Submit" @formname="AddCarPicture">
     <div>
@@ -34,14 +27,14 @@
     </div>
     this.ErrorMessage = string.Empty;
 }
-@* <button class="btn btn-outline-primary" @onclick="CreateCarPicture">Add Picture</button>
- *@
+<button class="btn btn-outline-primary" @onclick="NavigateReturn">Return</button>
+ 
 @code {
     [Parameter]
-    public int PathParam { get; set; }
+    public int CarId { get; set; }
     [SupplyParameterFromForm]
     public CarPicture? Picture { get; set; }
-    protected override void OnInitialized() => Picture ??= new() { CarId = this.PathParam };
+    protected override void OnInitialized() => Picture ??= new() { CarId = this.CarId };
     public string ErrorMessage { get; set; } = string.Empty;
 
     private async Task Submit()
@@ -52,7 +45,12 @@
         } 
         else
         {
-            await _context.CarPictures.AddAsync(Picture);
+            await _CarPictures.AddAsync(Picture);
         }
+    }
+
+    private void NavigateReturn()
+    {
+        Navigation.NavigateTo($"/EditCar/{CarId}");
     }
 }

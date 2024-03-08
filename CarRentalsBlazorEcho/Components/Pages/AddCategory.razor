@@ -1,39 +1,12 @@
-﻿@attribute [StreamRendering]
-@page "/addcategory"
+﻿@page "/AddCategory"
 @rendermode InteractiveAuto
 @using CarRentalsBlazorEcho.Models
 @using CarRentalsBlazorEcho.Data
-@inject ICarCategory rep;
-@inject ApplicationDbContext _context;
+@inject ICarCategory _carCategoryRepository;
+@inject NavigationManager Navigation;
 
 <h3>Car Categories</h3>
-
-<p>
-    This is for Blazor CRUD development for CarCategory.
-</p>
-@* @if(carCategories is not null && carCategories.Any())
-{
-    <table class="tabe">
-        <thead>
-            <tr>
-                <th>
-                    Categories
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var carCategory  in carCategories)
-            {
-                <tr>
-                    <td>@carCategory.CategoryName</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-} *@
-<h3>
-    Add:
-</h3>
+<h3>Add:</h3>
 
 <form method="post" @onsubmit="Submit" @formname="AddCarCategory">
     <div>
@@ -46,13 +19,6 @@
         <button type="submit">Submit</button>
     </div>
 </form>
-@if (this.SuccessMessage != string.Empty)
-{
-    <div class="alert alert-success">
-        <strong>Success!</strong> @this.SuccessMessage
-    </div>
-    this.SuccessMessage = string.Empty;
-}
 @if (this.ErrorMessage != string.Empty)
 {
     <div class="alert alert-danger">
@@ -66,8 +32,6 @@
     public CarCategory? Category { get; set; }
     protected override void OnInitialized() => Category ??= new();
     public string ErrorMessage { get; set; } = string.Empty;
-    public string SuccessMessage { get; set; } = string.Empty;
-    List<CarCategory>? carCategories;
 
     private async Task Submit()
     {
@@ -77,8 +41,8 @@
         }
         else
         {
-            await _context.CarCategories.AddAsync(Category);
-            this.SuccessMessage = "Car category added succesfully.";
+            await _carCategoryRepository.AddAsync(Category);
+            Navigation.NavigateTo("Categories");
         }
     }
 }

@@ -18,6 +18,12 @@ namespace CarRentalsBlazorEcho.Data
             await _applicationDbContext.SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(CarPicture picture)
+        {
+            _applicationDbContext?.CarPictures.Remove(picture);
+            await _applicationDbContext.SaveChangesAsync();
+        }
+
         public async Task <IEnumerable<CarPicture>> GetAllByCarIdAsync(int id)
         {
             return await (Task<IEnumerable<CarPicture>>)_applicationDbContext.CarPictures.Where(p => p.CarId == id);
