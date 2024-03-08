@@ -1,0 +1,67 @@
+﻿@using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Data
+@inject IUser _userRep
+@inject NavigationManager NavigationManager
+
+<h3>UserEdit</h3>
+
+@if (user != null)
+{
+    <form @onsubmit="UpdateUser">
+        <div>
+            <label for="brand">Brand:</label>
+            <input type="text" id="brand" @bind="user.Brand" required />
+        </div>
+        <div>
+            <label for="model">Model:</label>
+            <input type="text" id="model" @bind="user.Model" required />
+        </div>
+        <div>
+            <label for="price">Price:</label>
+            <input type="number" id="price" @bind="user.Price" required />
+        </div>
+        <div>
+        </div>
+        <div>
+
+        </div>
+        <button type="submit">Update</button>
+    </form>
+    <button @onclick="NavigateToAddCarPicture">Add Picture</button>
+}
+else
+{
+    <p>Loading...</p>
+}
+<button class="btn btn-outline-primary" @onclick="NavigateReturn">Return To List</button>
+
+@code {
+    User user;
+
+    [Parameter]
+    public string UserId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(UserId) && int.TryParse(UserId, out int id))
+        {
+            // user = await _userRep.GetByIdAsync(id);
+        }  
+    }
+
+    private async Task UpdateUser()
+    {
+        // await _userRep.UpdateAsync(user);
+        NavigationManager.NavigateTo("/Cars");
+    }
+
+    private void NavigateToAddCarPicture()
+    {
+        NavigationManager.NavigateTo($"/AddCarPicture/{user.UserId}");
+    }
+
+    private void NavigateReturn()
+    {
+        NavigationManager.NavigateTo($"/Cars");
+    }
+}

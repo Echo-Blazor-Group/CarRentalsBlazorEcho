@@ -1,0 +1,23 @@
+﻿@page "/Loggout"
+@using CarRentalsBlazorEcho.Models
+@attribute [StreamRendering]
+@rendermode InteractiveAuto
+@inject NavigationManager navManager
+@if (CurrentUser.IsLoggedIn == false)
+{
+    <p> You have been logged out</p>
+    <button class="btn btn-outline-primary" @onclick="NavTo">Ok</button>
+}
+@code {
+
+    protected override Task OnInitializedAsync()
+    {
+        CurrentUser.Reset();
+        return base.OnInitializedAsync();
+
+    }
+    protected void NavTo()
+    {
+        navManager.NavigateTo("", true);
+    }
+}

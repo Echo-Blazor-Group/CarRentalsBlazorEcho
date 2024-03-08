@@ -1,0 +1,97 @@
+﻿@page "/Loggin"
+
+@using CarRentalsBlazorEcho.Models
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.EntityFrameworkCore
+@using CarRentalsBlazorEcho.Data
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@attribute [StreamRendering]
+@rendermode InteractiveAuto
+@inject NavigationManager NavigationManager
+@inject IUser _userContext
+
+
+
+<h2>Login:</h2>
+<form method="post" @onsubmit="Submit" @formname="SubmitLoginRequest">
+    <div class="text-danger"></div>
+    <div class="form-group">
+        <label>Email:</label>
+        <InputText @bind-Value="LoginRequest!.Email" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Password:</label>
+        <InputText @bind-Value="LoginRequest!.Password" />
+    </div>
+    @if (this.LoginErrorMessage != string.Empty)
+    {
+        <div class="alert alert-danger">
+            <strong>Error!</strong> @this.LoginErrorMessage
+        </div>
+        this.LoginErrorMessage = string.Empty;
+    }
+    <br />
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Login </button>
+    </div>
+</form>
+
+
+@code {
+    [SupplyParameterFromForm]
+    public LoginRequest LoginRequest { get; set; } = default!;
+
+
+    protected override void OnInitialized() => LoginRequest ??= new();
+    public string LoginErrorMessage { get; set; } = string.Empty;
+    public string RegisterErrorMessage { get; set; } = string.Empty;
+
+
+    public async Task Submit()
+    {
+        if (string.IsNullOrEmpty(LoginRequest.Email) || string.IsNullOrEmpty(LoginRequest.Password))
+        {
+
+            LoginErrorMessage = "Login request failed.";
+
+        }
+        else
+        {
+            User user = await _userContext.GetByEmailAsync(LoginRequest.Email);
+            if (user == null)
+            {
+                LoginErrorMessage = "Login request failed. No user with email " + LoginRequest.Email + " exists.";
+
+            }
+            else
+            {
+                if (user.Password != LoginRequest.Password)
+                {
+                    LoginErrorMessage = "Login request failed. Wrong password.";
+                }
+                else
+                {
+                    if (user.Role == "Admin")
+                    {
+                        CurrentUser.IsAdmin = true;
+                    }
+
+                    CurrentUser.Email = user.Email;
+                    CurrentUser.IsLoggedIn = true;
+
+                    if (CurrentUser.RedirectedFromBooking)
+                    {
+                        CurrentUser.RedirectedFromBooking = false;
+
+                    }
+                    NavigationManager.NavigateTo("", true);
+                }
+
+            }
+        }
+    }
+}
+
+
+
