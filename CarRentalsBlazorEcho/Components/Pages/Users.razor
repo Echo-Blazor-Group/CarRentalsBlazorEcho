@@ -1,6 +1,7 @@
 ﻿@page "/Users"
 @using CarRentalsBlazorEcho.Data
 @using CarRentalsBlazorEcho.Models
+@inject NavigationManager NavigationManager
 
 @inject IUser UserRepository
 
@@ -28,37 +29,35 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in users)
+        @foreach (var user in users)
         {
             <tr>
                 <td>
-                    @item.UserId
+                    @user.UserId
                 </td>
                 <td>
-                    @item.FirstName
+                    @user.FirstName
                 </td>
                 <td>
-                    @item.LastName
+                    @user.LastName
                 </td>
                 <td>
-                    @item.Email
+                    @user.Email
                 </td>
                 <td>
-                    @item.Password
+                    @user.Password
                 </td>
                 <td>
                     @if (CurrentUser.IsAdmin == true)
                     {
-                        <a href="users/edit/@item.UserId">Edit</a>
-                        <a>|</a>
-                        <a href="users/details/@item.UserId">Details</a>
-                        <a>|</a>
-                        <a href="users/delete/@item.UserId">Delete</a>
+                        <button @onclick="() => UserDetails(user)">Details</button>
+                        <button @onclick="() => EditUser(user)">Edit</button>
+                        <button @onclick="() => DeleteUser(user)">Delete</button>
                     }
-
                 </td>
             </tr>
         }
+        
     </tbody>
 </table>
 
@@ -68,5 +67,18 @@
     protected override async Task OnInitializedAsync()
     {
         users = await UserRepository.GetAllAsync();
+    }
+
+    private void EditUser(User users)
+    {
+        NavigationManager.NavigateTo($"/UserCRUD/UserEdit/{users.UserId}");
+    }
+    private void UserDetails(User users)
+    {
+        NavigationManager.NavigateTo($"//{users.UserId}");
+    }
+    private void DeleteUser(User users)
+    {
+        NavigationManager.NavigateTo($"//{users.UserId}");
     }
 }
