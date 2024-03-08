@@ -33,10 +33,9 @@ namespace CarRentalsBlazorEcho.Data
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }
-
-        Task<User> IUser.GetByCookieAsync(User Principal)
+        public async Task<User> GetByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            return await _context.Users.SingleOrDefaultAsync(s => s.Email == email);
         }
     }
 }

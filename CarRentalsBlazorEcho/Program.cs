@@ -1,6 +1,5 @@
 using CarRentalsBlazorEcho.Components;
 using CarRentalsBlazorEcho.Data;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 using System;
@@ -17,33 +16,21 @@ namespace CarRentalsBlazorEcho
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.Cookie.HttpOnly = true;
-                    options.Cookie.SameSite = SameSiteMode.Lax;
-                    options.Cookie.Name = "auth_token";
-                    options.LoginPath = "/Login";
-                    options.LogoutPath = "/Logout";
-                    options.Cookie.MaxAge = TimeSpan.FromMinutes(15);
-                    options.AccessDeniedPath = "/AccessDenied";
-                });
-            builder.Services.AddAuthentication();
-            builder.Services.AddCascadingAuthenticationState();
-
-
             string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CarRentalsBlazor;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
-
-            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.AddRazorPages();
+            
             builder.Services.AddTransient<ICar, CarRepository>();
             builder.Services.AddTransient<ICarCategory, CarCategoryRepository>();
             builder.Services.AddTransient<IOrder, OrderRepository>();
             builder.Services.AddTransient<IUser, UserRepository>();
             builder.Services.AddTransient<ICarPicture, CarPictureRepository>();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            builder.Services.AddAuthentication();
+            builder.Services.AddAuthorization();
 
             // Rest of the code
             var app = builder.Build();
@@ -60,10 +47,12 @@ namespace CarRentalsBlazorEcho
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-            app.UseAntiforgery();
+            
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
+            PageActionEndpointConventionBuilder pageActionEndpointConventionBuilder = app.MapRazorPages();
+            app.UseAntiforgery();
 
             app.Run();
         }
