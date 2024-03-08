@@ -71,11 +71,11 @@ namespace CarRentalsBlazorEcho.Migrations
 
             modelBuilder.Entity("CarRentalsBlazorEcho.Models.CarPicture", b =>
                 {
-                    b.Property<int>("CarPictureId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarPictureId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CarId")
                         .HasColumnType("int");
@@ -84,7 +84,7 @@ namespace CarRentalsBlazorEcho.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CarPictureId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
@@ -100,9 +100,6 @@ namespace CarRentalsBlazorEcho.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
                     b.Property<int>("CarId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")

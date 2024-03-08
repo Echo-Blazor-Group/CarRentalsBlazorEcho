@@ -9,9 +9,9 @@ namespace CarRentalsBlazorEcho.Models
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
+        public string FullName { get { return $"{FirstName} {LastName}"; } }
         [Required]
         [DataType(DataType.EmailAddress)]
-        public string FullName { get { return $"{FirstName} {LastName}"; } }
         public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]
