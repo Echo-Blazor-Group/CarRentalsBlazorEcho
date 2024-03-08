@@ -27,6 +27,7 @@
     </div>
     this.ErrorMessage = string.Empty;
 }
+<br />
 <button class="btn btn-outline-primary" @onclick="NavigateReturn">Return</button>
  
 @code {
@@ -46,6 +47,7 @@
         else
         {
             await _CarPictures.AddAsync(Picture);
+            NavigateReturn();
         }
     }
 

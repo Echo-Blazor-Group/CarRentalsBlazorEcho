@@ -1,7 +1,9 @@
 ﻿@page "/CarDetails/{carId}"
 @using CarRentalsBlazorEcho.Models
 @using CarRentalsBlazorEcho.Data
+@rendermode InteractiveAuto
 @inject ICar _carRep
+@inject ICarPicture _carPictureRep
 @inject NavigationManager NavigationManager
 
 <h3>Car Details</h3>
@@ -14,8 +16,33 @@
         <p><strong>Price:</strong> @car.Price</p>
         <p><strong>Car Category:</strong>@car.CarCategoryId</p>
         <p><strong>Available:</strong> @car.Available</p>
+        <p><strong>Pictures:</strong></p>
     </div>
-    <button @onclick="NavigateToCars">Back to Cars</button>
+    <table class="table">
+        <tbody>
+            @if(carPictures is not null && carPictures.Any())
+            {
+                @foreach (var item in carPictures)
+                {
+                    <tr>
+                        <td>
+                            <img src=@item.PictureUrl width="500px" />
+                            @if (CurrentUser.IsAdmin)
+                            {
+                                <button @onclick="() => DeletePicture(item)">Delete</button>
+                            }
+                            <br>
+                        </td>
+                    </tr>
+                }
+            } 
+            else
+            {
+                <p>No pictures found.</p>
+            }
+        </tbody>
+    </table>
+    <button class="btn btn-outline-primary" @onclick="NavigateToCars">Return To List</button>
 }
 else
 {
@@ -24,7 +51,7 @@ else
 
 @code {
     Car car;
-
+    List<CarPicture>? carPictures;
     [Parameter]
     public string CarId { get; set; }
 
@@ -33,7 +60,14 @@ else
         if (!string.IsNullOrEmpty(CarId) && int.TryParse(CarId, out int id))
         {
             car = await _carRep.GetByIdAsync(id);
+            carPictures = (await _carPictureRep.GetAllByCarIdAsync(id)).ToList();
         }
+    }
+
+    private async Task DeletePicture(CarPicture picture)
+    {
+        await _carPictureRep.DeleteAsync(picture);
+        NavigationManager.NavigateTo($"/CarDetails/{CarId}", true);
     }
 
     private void NavigateToCars()

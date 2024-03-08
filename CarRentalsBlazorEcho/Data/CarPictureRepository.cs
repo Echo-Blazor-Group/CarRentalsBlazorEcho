@@ -26,7 +26,7 @@ namespace CarRentalsBlazorEcho.Data
 
         public async Task <IEnumerable<CarPicture>> GetAllByCarIdAsync(int id)
         {
-            return await (Task<IEnumerable<CarPicture>>)_applicationDbContext.CarPictures.Where(p => p.CarId == id);
+            return await _applicationDbContext.CarPictures.Where(p => p.CarId == id).ToListAsync();
         }
     }
 }
