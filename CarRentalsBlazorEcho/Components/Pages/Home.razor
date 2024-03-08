@@ -1,26 +1,16 @@
 ﻿@page "/"
-@inject IHttpContextAccessor HttpContextAccessor
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@using System.Threading
+@using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Components.Pages
+
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, And welcome to Car Rentals</h1>
 
 
-    <p>@UserName</p>
-
-
-@code{
-    public string? currentUserCookieValue { get; set;}
-    private string UserName { get; set; }
-
-    protected override async void OnInitialized() {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        UserName = user.Identity.Name;
-        currentUserCookieValue = HttpContextAccessor.HttpContext.Request.Cookies["auth_token"];
-    }
+@code {
+    
 }
 
 <ShowAllUsers> </ShowAllUsers>

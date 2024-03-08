@@ -1,4 +1,7 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Data
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">CarRentalsBlazorEcho</a>
     </div>
@@ -13,63 +16,49 @@
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        <div>
-            <AuthorizeView Roles="Admin,User">
-                <Authorized>
-                    <div class="nav-item px-3">
-                        <NavLink class="nav-link" href="counter">
-                            <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-                        </NavLink>
-                    </div>
-                </Authorized>
-            </AuthorizeView>
+                @if (CurrentUser.IsLoggedIn == false)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="Loggin">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Login
+            </NavLink>
         </div>
-
-        <div>
-            <AuthorizeView Roles="Admin">
-                <Authorized>
-                    <div class="nav-item px-3">
-                        <div class="nav-item px-3">
-                            <NavLink class="nav-link" href="weather">
-                                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-                            </NavLink>
-                        </div>
-                    </div>
-                </Authorized>
-            </AuthorizeView>
-        </div>
-        <div class="nav-item px-3">
-            <AuthorizeView>
-                <NotAuthorized>
-                    <NavLink class="nav-link" href="/Login">
-                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Login
-                    </NavLink>
-                   @*  <a href="/Login">Login</a> *@
-                </NotAuthorized>
-                <Authorized>
-                    <NavLink class="nav-link" href="/Logout">
-                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Logout
-                    </NavLink>
-                   @*  <a href="/Logout">Logout</a> *@
-                </Authorized>
-            </AuthorizeView>
-        </div>
+        }
+        @if (CurrentUser.IsLoggedIn == true)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="Loggout">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Logout
+                </NavLink>
+            </div>
+        }
+        @if (CurrentUser.IsLoggedIn == true && CurrentUser.IsAdmin == true)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="Users">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Users
+                </NavLink>
+            </div>
+        }
+        @if (CurrentUser.IsLoggedIn == true && CurrentUser.IsAdmin == false)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="Users">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> My Account
+                </NavLink>
+            </div>
+        }
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Cars">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Cars
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Users">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Users
-            </NavLink>
-        </div>
+
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Orders">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Orders
             </NavLink>
         </div>
-
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Categories">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Categories
