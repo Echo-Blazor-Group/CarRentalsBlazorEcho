@@ -15,6 +15,7 @@ namespace CarRentalsBlazorEcho.Models
         [Required]
         public int Price { get; set; }
         public bool Available { get; set; }
+        public CarCategory CarCategory { get; set; }
 
         public Car()
         {
