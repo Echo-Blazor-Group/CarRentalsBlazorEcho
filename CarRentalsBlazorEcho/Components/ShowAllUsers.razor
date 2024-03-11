@@ -13,14 +13,14 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Name</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var user in users)
             {
                 <tr>
-                    <td>@user.UserId</td>
+                    <td>@user.FullName</td>
                 </tr>
             }
         </tbody>
