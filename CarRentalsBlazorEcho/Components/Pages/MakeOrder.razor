@@ -7,7 +7,7 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveAuto
 
-<h3>Make Order</h3>
+<h3>Make Reservation</h3>
 
 @if (newOrder != null && users != null)
 {
@@ -20,8 +20,13 @@
             <label for="endDate">End Date:</label>
             <input type="date" id="endDate" @bind="newOrder.EndDate" class="form-control" />
         </div>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <div style="margin-top: 20px;">
+            <button type="submit" class="btn btn-success" style="float: left; margin-right: 10px;">Order</button>
+        </div>
     </form>
+    <div style="margin-top: 20px;">
+        <button class="btn btn-primary" @onclick="Return">Return</button>
+    </div>
 }
 else
 {
@@ -50,7 +55,6 @@ else
         newOrder.EndDate = DateTime.Now.Date.AddDays(1);
     }
 
-
     private async Task CreateOrder()
     {
         newOrder.CarId = carId;
@@ -58,8 +62,11 @@ else
 
         await OrderRepository.AddAsync(newOrder);
         NavigationManager.NavigateTo("/Orders");        
+    }
 
-
+    private void Return()
+    {
+        NavigationManager.NavigateTo("/Cars");
     }
 
     private int GetUserId(string email)
