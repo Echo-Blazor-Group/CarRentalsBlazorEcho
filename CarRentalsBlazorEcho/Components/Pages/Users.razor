@@ -1,19 +1,17 @@
 ﻿@page "/Users"
 @using CarRentalsBlazorEcho.Data
 @using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Components
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inject IUser UserRepository
 
-<h1>Users</h1>
-@if (CurrentUser.IsLoggedIn == true)
-{
-    
 
-}
-<table class="table long">
-    @if (CurrentUser.IsLoggedIn == true && CurrentUser.IsAdmin != true)
-    {
+
+@if (CurrentUser.IsLoggedIn == true && CurrentUser.IsAdmin == true)
+{
+    <h1>Users</h1>
+    <table class="table long">
         <thead>
             <tr>
                 <th>
@@ -35,6 +33,63 @@
             </tr>
         </thead>
 
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>
+                        @user.UserId
+                    </td>
+                    <td>
+                        @user.FirstName
+                    </td>
+                    <td>
+                        @user.LastName
+                    </td>
+                    <td>
+                        @user.Email
+                    </td>
+                    <td>
+                        @user.Password
+                    </td>
+                    <td>
+                        @if (CurrentUser.IsAdmin == true)
+                        {
+                            <button @onclick="() => UserDetails(user)">Details</button>
+                            <button @onclick="() => EditUser(user)">Edit</button>
+                            <button @onclick="() => DeleteUser(user)">Delete</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (CurrentUser.IsLoggedIn == true && CurrentUser.IsAdmin != true)
+{
+    <h1>User</h1>
+    <table class="table long">
+        <thead>
+            <tr>
+                <th>
+                    Customer Id
+                </th>
+                <th>
+                    FirstName
+                </th>
+                <th>
+                    LastName
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Password
+                </th>
+                <th></th>
+            </tr>
+        </thead>
         <tbody>
             @foreach (var user in user)
             {
@@ -64,81 +119,45 @@
                     </td>
                 </tr>
             }
-
         </tbody>
-    }
-    <thead>
-        <tr>
-            <th>
-                Customer Id
-            </th>
-            <th>
-                FirstName
-            </th>
-            <th>
-                LastName
-            </th>
-            <th>
-                Email
-            </th>
-            <th>
-                Password
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var user in users)
-        {
-            <tr>
-                <td>
-                    @user.UserId
-                </td>
-                <td>
-                    @user.FirstName
-                </td>
-                <td>
-                    @user.LastName
-                </td>
-                <td>
-                    @user.Email
-                </td>
-                <td>
-                    @user.Password
-                </td>
-                <td>
-                    @if (CurrentUser.IsAdmin == true)
-                    {
-                        <button @onclick="() => UserDetails(user)">Details</button>
-                        <button @onclick="() => EditUser(user)">Edit</button>
-                        <button @onclick="() => DeleteUser(user)">Delete</button>
-                    }
-                </td>
-            </tr>
-        }
-        
-    </tbody>
-</table>
+    </table>
+}
 
 @code {
-
-    private IEnumerable<User> user { get; set; } = new List<User>(); 
     private IEnumerable<User> users { get; set; } = new List<User>();
+    public IEnumerable<User> user { get; set; } = new List<User>();
+    private int currentUserId;
 
     protected override async Task OnInitializedAsync()
     {
+        var currentUserId = GetUserId(CurrentUser.Email);
+        users = await UserRepository.GetAllAsync();
         if (CurrentUser.IsLoggedIn == true)
         {
-            var currentUserId = CurrentUser.User.UserId;
-            var userId = await UserRepository.GetByIdAsync(currentUserId);
+            user = users;
+            user.Where(u => u.UserId == currentUserId);
+        }
+    }
+    private int GetUserId(string email)
+    {
+        if (users != null)
+        {
+            User? user = users.FirstOrDefault(u => u.Email == email);
+
+            if (user != null)
+            {
+                return user.UserId;
+            }
+            else
+            {
+                return -1;
+            }
         }
         else
         {
-            users = await UserRepository.GetAllAsync();
+            return -1;
         }
     }
-
     private void EditUser(User users)
     {
         NavigationManager.NavigateTo($"/UserEdit/{users.UserId}");
@@ -160,5 +179,4 @@
     {
         return await JSRuntime.InvokeAsync<bool>("confirm", message);
     }
-
 }

@@ -4,7 +4,7 @@ namespace CarRentalsBlazorEcho.Models
 {
     public class CurrentUser
     {
-        public static User User { get; set; }
+        public static User? User { get; set; } 
         public static string Email { get; set; } = string.Empty;
         public static bool IsAdmin { get; set; } = false;
         public static int LastCarLookedAtId { get; set; }
