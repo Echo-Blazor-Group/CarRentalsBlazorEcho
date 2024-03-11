@@ -1,4 +1,5 @@
-﻿@using CarRentalsBlazorEcho.Models
+﻿@page "/UserEdit/{UserId}"
+@using CarRentalsBlazorEcho.Models
 @using CarRentalsBlazorEcho.Data
 @inject IUser _userRep
 @inject NavigationManager NavigationManager
@@ -30,7 +31,6 @@
         </div>
         <button type="submit">Update</button>
     </form>
-    <button @onclick="NavigateToAddCarPicture">Add Picture</button>
 }
 else
 {
@@ -54,16 +54,11 @@ else
     private async Task UpdateUser()
     {
          await _userRep.UpdateAsync(user);
-        NavigationManager.NavigateTo("/Cars");
-    }
-
-    private void NavigateToAddCarPicture()
-    {
-        NavigationManager.NavigateTo($"/AddCarPicture/{user.UserId}");
+        NavigationManager.NavigateTo("/Users");
     }
 
     private void NavigateReturn()
     {
-        NavigationManager.NavigateTo($"/Cars");
+        NavigationManager.NavigateTo($"/Users");
     }
 }
