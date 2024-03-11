@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Data
+@inherits LayoutComponentBase
 
 <div class="page">
     <div class="sidebar">
@@ -7,7 +9,22 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            @if (CurrentUser.IsLoggedIn == false)
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="btn btn-primary" href="Loggin">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Login
+                    </NavLink>
+                </div>
+            }
+            @if (CurrentUser.IsLoggedIn == true)
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="btn btn-outline-primary" href="Loggout">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Logout
+                    </NavLink>
+                </div>
+            }
         </div>
 
         <article class="content px-4">
