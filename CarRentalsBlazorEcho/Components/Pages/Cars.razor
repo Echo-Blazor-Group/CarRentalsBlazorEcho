@@ -8,11 +8,14 @@
 @rendermode InteractiveAuto
 
 <h3>Cars</h3>
+@if (CurrentUser.IsAdmin == true)
+{
+    <button @onclick="GoToAddCarPage">Add New Car</button>
+    <button @onclick="GoToCarsToPrepPage">Cars to Prep</button>
+}
 
-<button @onclick="GoToAddCarPage">Add New Car</button>
-<button @onclick="GoToCarsToPrepPage">Cars to Prep</button>
 <button @onclick="GoToAvailableCarsPage">Available Cars</button>
-@if(carCategories != null)
+@if (carCategories != null)
 {
     <div>
         <label for="categoryFilter">Filter by Car Category:</label>
@@ -49,7 +52,8 @@
                     <td>@car.Available</td>
                     <td>
                         <button @onclick="() => CarDetails(car)">Details</button>
-                        @if (CurrentUser.IsAdmin == true) {   
+                        @if (CurrentUser.IsAdmin == true)
+                        {
                             <button @onclick="() => EditCar(car)">Edit</button>
                             <button @onclick="() => DeleteCar(car)">Delete</button>
                         }
@@ -57,7 +61,7 @@
                         @if (CurrentUser.IsLoggedIn == true)
                         {
                             <button @onclick="() => MakeReservation(car)">Make Reservation</button>
-                        }     
+                        }
                     </td>
                 </tr>
             }
