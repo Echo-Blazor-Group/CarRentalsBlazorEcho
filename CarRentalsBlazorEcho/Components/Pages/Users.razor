@@ -2,7 +2,7 @@
 @using CarRentalsBlazorEcho.Data
 @using CarRentalsBlazorEcho.Models
 @inject NavigationManager NavigationManager
-
+@inject IJSRuntime JSRuntime
 @inject IUser UserRepository
 
 <h1>Users</h1>
@@ -71,14 +71,24 @@
 
     private void EditUser(User users)
     {
-        NavigationManager.NavigateTo($"/UserCRUD/UserEdit/{users.UserId}");
+        NavigationManager.NavigateTo($"/UserEdit/{users.UserId}");
     }
     private void UserDetails(User users)
     {
-        NavigationManager.NavigateTo($"//{users.UserId}");
+        NavigationManager.NavigateTo($"/UserDetails/{users.UserId}");
     }
-    private void DeleteUser(User users)
+    private async Task DeleteUser(User user)
     {
-        NavigationManager.NavigateTo($"//{users.UserId}");
+        var confirmed = await ShowDeleteConfirmationDialog("Are you sure you want to delete this user?");
+        if (confirmed)
+        {
+            await UserRepository.DeleteAsync(user);
+            await OnInitializedAsync();
+        }
     }
+    private async Task<bool> ShowDeleteConfirmationDialog(string message)
+    {
+        return await JSRuntime.InvokeAsync<bool>("confirm", message);
+    }
+
 }
