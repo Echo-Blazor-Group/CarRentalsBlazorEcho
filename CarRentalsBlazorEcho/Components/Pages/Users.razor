@@ -12,6 +12,61 @@
 
 }
 <table class="table long">
+    @if (CurrentUser.IsLoggedIn == true && CurrentUser.IsAdmin != true)
+    {
+        <thead>
+            <tr>
+                <th>
+                    Customer Id
+                </th>
+                <th>
+                    FirstName
+                </th>
+                <th>
+                    LastName
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Password
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var user in user)
+            {
+                <tr>
+                    <td>
+                        @user.UserId
+                    </td>
+                    <td>
+                        @user.FirstName
+                    </td>
+                    <td>
+                        @user.LastName
+                    </td>
+                    <td>
+                        @user.Email
+                    </td>
+                    <td>
+                        @user.Password
+                    </td>
+                    <td>
+                        @if (CurrentUser.IsAdmin == true)
+                        {
+                            <button @onclick="() => UserDetails(user)">Details</button>
+                            <button @onclick="() => EditUser(user)">Edit</button>
+                            <button @onclick="() => DeleteUser(user)">Delete</button>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    }
     <thead>
         <tr>
             <th>
@@ -32,6 +87,7 @@
             <th></th>
         </tr>
     </thead>
+
     <tbody>
         @foreach (var user in users)
         {
@@ -66,11 +122,21 @@
 </table>
 
 @code {
+
+    private IEnumerable<User> user { get; set; } = new List<User>(); 
     private IEnumerable<User> users { get; set; } = new List<User>();
 
     protected override async Task OnInitializedAsync()
     {
-        users = await UserRepository.GetAllAsync();
+        if (CurrentUser.IsLoggedIn == true)
+        {
+            var currentUserId = CurrentUser.User.UserId;
+            var userId = await UserRepository.GetByIdAsync(currentUserId);
+        }
+        else
+        {
+            users = await UserRepository.GetAllAsync();
+        }
     }
 
     private void EditUser(User users)

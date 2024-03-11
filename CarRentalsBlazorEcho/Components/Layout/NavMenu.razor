@@ -40,21 +40,31 @@
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Cars
             </NavLink>
         </div>
-        @if (CurrentUser.IsLoggedIn)
+        @if (CurrentUser.IsAdmin == true)
         {
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="Orders">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Orders
-            </NavLink>
-        </div>
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Orders
+                </NavLink>
+            </div>
         }
-        @if (CurrentUser.IsLoggedIn == true && CurrentUser.IsAdmin == true)
+        @if (CurrentUser.IsLoggedIn == true)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="Orders">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> My Orders
+                </NavLink>
+            </div>
+        }
+
+        @if (CurrentUser.IsAdmin == true)
         {
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="Categories">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Categories
-            </NavLink>
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Categories
+                </NavLink>
             </div>
         }
+
     </nav>
 </div>
