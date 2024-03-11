@@ -1,0 +1,42 @@
+﻿@page "/UserDetails/{UserId}"
+@using CarRentalsBlazorEcho.Models
+@using CarRentalsBlazorEcho.Data
+@rendermode InteractiveAuto
+@inject IUser _userRep
+@inject NavigationManager NavigationManager
+
+<h3>User Details</h3>
+
+@if (user != null)
+{
+    <div>
+        <p><strong>Id:</strong> @user.UserId</p>
+        <p><strong>First Name:</strong> @user.FirstName</p>
+        <p><strong>Last Name:</strong> @user.LastName</p>
+        <p><strong>Email:</strong> @user.Email</p>
+        <p><strong>Role:</strong> @user.Role</p>
+    </div>
+    <button class="btn btn-outline-primary" @onclick="NavigateToUsers">Return To List</button>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+        User user;
+        [Parameter]
+        public string UserId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(UserId) && int.TryParse(UserId, out int id))
+        {
+            user = await _userRep.GetByIdAsync(id);
+        }
+    }
+    private void NavigateToUsers()
+    {
+        NavigationManager.NavigateTo("/Users");
+    }
+}

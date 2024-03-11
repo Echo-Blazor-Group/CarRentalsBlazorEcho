@@ -36,6 +36,9 @@
         <button type="submit" class="btn btn-primary">Login </button>
     </div>
 </form>
+<div class="form-group">
+    <button @onclick="NavigateToRegisterUser" class="btn btn-primary">Register </button>
+</div>
 
 
 @code {
@@ -90,6 +93,10 @@
 
             }
         }
+    }
+    private void NavigateToRegisterUser()
+    {
+        NavigationManager.NavigateTo("RegisterUser");
     }
 }
 
