@@ -51,6 +51,7 @@
                         <button @onclick="() => CarDetails(car)">Details</button>
                         <button @onclick="() => EditCar(car)">Edit</button>
                         <button @onclick="() => DeleteCar(car)">Delete</button>
+                        <button @onclick="() => MakeReservation(car)">Make Reservation</button>
                     </td>
                 </tr>
             }
@@ -118,6 +119,11 @@ else
     private void CarDetails(Car car)
     {
         NavigationManager.NavigateTo($"/CarDetails/{car.CarId}");
+    }
+
+    private void MakeReservation(Car car)
+    {
+        NavigationManager.NavigateTo($"/MakeOrder/{car.CarId}");
     }
 
     private async Task FilterByCategory(ChangeEventArgs e)

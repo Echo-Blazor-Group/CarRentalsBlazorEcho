@@ -2,27 +2,41 @@
 @using CarRentalsBlazorEcho.Data
 @using CarRentalsBlazorEcho.Models
 @inject IOrder OrderRepository
+@inject ICar CarRepository
+@inject IUser UserRepository
 
-<h3>Oredrs</h3>
+<h3>Orders</h3>
+
+<div>
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" @bind="startDate" />
+
+    <label for="endDate">-</label>
+    <input type="date" id="endDate" @bind="endDate" />
+
+    <button @onclick="FilterOrders">Filter</button>
+    <button @onclick="LoadOrders">Clear Filter</button>
+</div>
+
 
 <table class="table long">
     <thead>
         <tr>
-            <th>CarId</th>
-            <th>CustomerId</th>
+            <th>Car</th>
+            <th>Customer</th>
             <th>StartDate</th>
             <th>EndDate</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in orders)
+        @foreach (var item in filteredOrders)
         {
             <tr>
-                <td>@item.CarId</td>
-                <td>@item.UserId</td>
-                <td>@item.StartDate</td>
-                <td>@item.EndDate</td>
+                <td>@GetModel(item.CarId)</td>
+                <td>@GetEmail(item.UserId)</td>
+                <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+                <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
                 <td>
                     <a href="OrderManagement/Edit/@item.OrderId">Edit</a> |
                     <a href="OrderManagement/Details/@item.OrderId">Details</a> |
@@ -34,11 +48,67 @@
 </table>
 
 @code {
+
     private IEnumerable<Order> orders { get; set; } = new List<Order>();
+    private IEnumerable<Car> cars { get; set; } = new List<Car>();
+    private IEnumerable<User> users { get; set; } = new List<User>();
+    private IEnumerable<Order> filteredOrders { get; set; } = new List<Order>();
+    private DateTime startDate;
+    private DateTime endDate;
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadOrders();
+
+        var _cars = await CarRepository.GetAllAsync().ConfigureAwait(false);
+        cars = _cars.ToList();
+        var _users = await UserRepository.GetAllAsync().ConfigureAwait(false);
+        users = _users.ToList();
+
+        startDate = DateTime.Now.Date;
+        endDate = DateTime.Now.Date.AddDays(6);
+    }
+
+    private async Task LoadOrders()
+    {
         var _orders = await OrderRepository.GetAllAsync().ConfigureAwait(false);
         orders = _orders.ToList();
+        filteredOrders = orders;
+    }
+
+    private void FilterOrders()
+    {
+        filteredOrders = orders
+            .Where(o => o.StartDate >= startDate && o.StartDate <= endDate)
+            .ToList();
+    }
+
+    private string GetEmail(int id)
+    {
+        User? user = users.FirstOrDefault(u => u.UserId == id);
+
+        if(user != null)
+        {
+            return user.Email; 
+        }
+        else
+        {
+            return "-user not found-";
+        }
+
+    }
+
+    private string GetModel(int id)
+    {
+        Car? car = cars.FirstOrDefault(c => c.CarId == id);
+
+        if (car != null)
+        {
+            return car?.Brand + " " + car?.Model;
+        }
+        else
+        {
+            return "-car not found-";
+        }
     }
 }
