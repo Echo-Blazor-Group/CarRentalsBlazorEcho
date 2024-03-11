@@ -40,7 +40,7 @@
 
     private async Task Submit()
     {
-        if (Picture == null || Picture.PictureUrl == string.Empty)
+        if (Picture == null || Picture.PictureUrl == null || Picture.PictureUrl == string.Empty)
         {
             this.ErrorMessage = "Add car picture failed.";
         } 

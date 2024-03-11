@@ -35,7 +35,7 @@
 
     private async Task Submit()
     {
-        if (Category == null || Category.CategoryName == string.Empty)
+        if (Category == null || Category.CategoryName == null || Category.CategoryName == string.Empty)
         {
             this.ErrorMessage = "Add car category failed.";
         }
