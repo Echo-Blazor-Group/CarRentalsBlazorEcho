@@ -6,7 +6,11 @@
 @inject IUser UserRepository
 
 <h1>Users</h1>
+@if (CurrentUser.IsLoggedIn == true)
+{
+    
 
+}
 <table class="table long">
     <thead>
         <tr>

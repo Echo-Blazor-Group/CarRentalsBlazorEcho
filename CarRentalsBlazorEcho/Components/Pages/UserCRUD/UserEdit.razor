@@ -28,8 +28,11 @@
         <div>
             <label for="Role">Role:</label>
             <input type="text" id="Role" @bind="user.Role" required />
-        </div>
-        <button type="submit">Update</button>
+        </div> 
+        @if (CurrentUser.IsAdmin == true)
+        {
+            <button type="submit">Update</button>
+        }
     </form>
 }
 else
