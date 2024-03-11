@@ -4,9 +4,16 @@
 @inject IOrder OrderRepository
 @inject ICar CarRepository
 @inject IUser UserRepository
+@inject NavigationManager NavigationManager
 
-<h3>Orders</h3>
-
+@if (CurrentUser.IsAdmin)
+{
+    <h3>Orders</h3>
+}
+else
+{
+    <h3>My Orders</h3>
+}
 <div>
     <label for="startDate">Start Date:</label>
     <input type="date" id="startDate" @bind="startDate" />
@@ -18,34 +25,62 @@
     <button @onclick="LoadOrders">Clear Filter</button>
 </div>
 
-
-<table class="table long">
-    <thead>
-        <tr>
-            <th>Car</th>
-            <th>Customer</th>
-            <th>StartDate</th>
-            <th>EndDate</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in filteredOrders)
-        {
+@if (CurrentUser.IsAdmin)
+{
+    <table class="table long">
+        <thead>
             <tr>
-                <td>@GetModel(item.CarId)</td>
-                <td>@GetEmail(item.UserId)</td>
-                <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
-                <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
-                <td>
-                    <a href="OrderManagement/Edit/@item.OrderId">Edit</a> |
-                    <a href="OrderManagement/Details/@item.OrderId">Details</a> |
-                    <a href="OrderManagement/Delete/@item.OrderId">Delete</a>
-                </td>
+                <th>Car</th>
+                <th>Customer</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in filteredOrders)
+            {
+                <tr>
+                    <td>@GetModel(item.CarId)</td>
+                    <td>@GetEmail(item.UserId)</td>
+                    <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+                    <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                            <button @onclick="() => OrderDetails(item.OrderId)">Details</button>
+                            <button @onclick="() => OrderEdit(item.OrderId)">Edit</button>
+                            <button @onclick="() => OrderDelete(item.OrderId)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table long">
+        <thead>
+            <tr>
+                <th>Car</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in filteredOrders.Where(o => o.UserId == currentUserId))
+            {
+                <tr>
+                    <td>@GetModel(item.CarId)</td>
+                    <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+                    <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <button @onclick="() => OrderDetails(item.OrderId)">Details</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
 
@@ -53,6 +88,7 @@
     private IEnumerable<Car> cars { get; set; } = new List<Car>();
     private IEnumerable<User> users { get; set; } = new List<User>();
     private IEnumerable<Order> filteredOrders { get; set; } = new List<Order>();
+    private int currentUserId;
     private DateTime startDate;
     private DateTime endDate;
 
@@ -64,6 +100,8 @@
         cars = _cars.ToList();
         var _users = await UserRepository.GetAllAsync().ConfigureAwait(false);
         users = _users.ToList();
+
+        currentUserId = GetUserId(CurrentUser.Email);
 
         startDate = DateTime.Now.Date;
         endDate = DateTime.Now.Date.AddDays(6);
@@ -110,5 +148,41 @@
         {
             return "-car not found-";
         }
+    }
+
+    private int GetUserId(string email)
+    {
+        if (users != null)
+        {
+            User? user = users.FirstOrDefault(u => u.Email == email);
+
+            if (user != null)
+            {
+                return user.UserId;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    private void OrderDetails(int id)
+    {
+        NavigationManager.NavigateTo($"OrderManagement/Delete/{id}");
+    }
+
+    private void OrderEdit(int id)
+    {
+        NavigationManager.NavigateTo($"OrderManagement/Delete/{id}");
+    }
+
+    private void OrderDelete(int id)
+    {
+        NavigationManager.NavigateTo($"OrderManagement/Delete/{id}");
     }
 }
