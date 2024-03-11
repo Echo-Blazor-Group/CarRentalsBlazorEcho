@@ -5,6 +5,18 @@
 
 <h3>Oredrs</h3>
 
+<div>
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" @bind="startDate" />
+
+    <label for="endDate">-</label>
+    <input type="date" id="endDate" @bind="endDate" />
+
+    <button @onclick="FilterOrders">Filter</button>
+    <button @onclick="LoadOrders">Clear Filter</button>
+</div>
+
+
 <table class="table long">
     <thead>
         <tr>
@@ -16,7 +28,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in orders)
+        @foreach (var item in filteredOrders)
         {
             <tr>
                 <td>@item.CarId</td>
@@ -34,11 +46,30 @@
 </table>
 
 @code {
+
     private IEnumerable<Order> orders { get; set; } = new List<Order>();
+    private IEnumerable<Order> filteredOrders { get; set; } = new List<Order>();
+    private DateTime startDate;
+    private DateTime endDate;
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadOrders();
+        startDate = DateTime.Now.Date;
+        endDate = DateTime.Now.Date.AddDays(6);
+    }
+
+    private async Task LoadOrders()
+    {
         var _orders = await OrderRepository.GetAllAsync().ConfigureAwait(false);
         orders = _orders.ToList();
+        filteredOrders = orders;
+    }
+
+    private void FilterOrders()
+    {
+        filteredOrders = orders
+            .Where(o => o.StartDate >= startDate && o.StartDate <= endDate)
+            .ToList();
     }
 }
