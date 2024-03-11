@@ -7,5 +7,6 @@ namespace CarRentalsBlazorEcho.Data
         Task AddAsync(CarPicture picture);
         Task DeleteAsync(CarPicture picture);
         Task <IEnumerable<CarPicture>> GetAllByCarIdAsync(int id);
+        Task<IEnumerable<CarPicture>> GetAllAsync();
     }
 }

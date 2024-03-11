@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject ICar _carRep
 @inject ICarCategory _categoryRep
+@inject ICarPicture CarPicturesRepository
 @inject IJSRuntime JSRuntime
 @rendermode InteractiveAuto
 
@@ -34,24 +35,23 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Brand</th>
-                <th>Model</th>
-                <th>Price</th>
-                <th>Available</th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var car in filteredCars)
             {
                 <tr>
-                    <td>@car.CarId</td>
-                    <td>@car.Brand</td>
-                    <td>@car.Model</td>
-                    <td>@car.Price</td>
-                    <td>@car.Available</td>
                     <td>
-                        <button @onclick="() => CarDetails(car)">Details</button>
+                        <button style="border: none; padding: 0;" @onclick="() => CarDetails(car)">
+                            <img src=@carPictures.FirstOrDefault(p=>p.CarId==car.CarId).PictureUrl height="200px" />
+                        </button>
+                    </td>
+                    <td>@car.Brand  @car.Model</td>
+                    <td>@car.Price sek/day</td>
+                    <td>
                         @if (CurrentUser.IsAdmin == true)
                         {
                             <button @onclick="() => EditCar(car)">Edit</button>
@@ -74,6 +74,7 @@ else
 }
 
 @code {
+    private IEnumerable<CarPicture> carPictures { get; set; } = new List<CarPicture>();
     List<Car> cars;
     List<CarCategory> carCategories;
     List<Car> filteredCars;
@@ -81,6 +82,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        var _carPictures = await CarPicturesRepository.GetAllAsync().ConfigureAwait(false);
+        carPictures = _carPictures.ToList();
+
         cars = (await _carRep.GetAllAsync()).ToList();
         carCategories = (await _categoryRep.GetAllAsync()).ToList();
         if (carCategories == null)

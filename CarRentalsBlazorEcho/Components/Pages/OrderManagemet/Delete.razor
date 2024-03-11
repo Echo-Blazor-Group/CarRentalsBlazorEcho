@@ -1,17 +1,29 @@
 ﻿@page "/OrderManagement/Delete/{orderId:int}"
 @using CarRentalsBlazorEcho.Data
 @using CarRentalsBlazorEcho.Models
+@inject IUser UserRepository
 @inject IOrder OrderRepository
+@inject ICar CarRepository
 @inject NavigationManager NavigationManager
 
-<h4>Delete This Order?</h4>
+<h4>Cancel This Order?</h4>
 
 @if (order != null)
 {
     <p>Ordernr:    @order.OrderId</p>
-    <p>Customernr: @order.UserId</p>
-    <p>Carnr:      @order.CarId</p>
-    <p>Date:       @order.StartDate - @order.EndDate</p>
+    <p>Date:       @order.StartDate.ToString("dd/MM/yyyy") - @order.EndDate.ToString("dd/MM/yyyy")</p>
+
+    <h4>Customer</h4>
+
+    <p>Customernr: @user.UserId</p>
+    <p>Name:       @user.FullName</p>
+    <p>Email:      @user.Email</p>
+
+    <h4>Car</h4>
+
+    <p>Carnr:      @car.CarId</p>
+    <p>Brand:      @car.Brand</p>
+    <p>Model:      @car.Model</p>
 }
 else
 {
@@ -21,6 +33,8 @@ else
 <button class="btn btn-primary" @onclick="Return">Return</button>
 
 @code {
+    private User user;
+    private Car car;
     public Order order;
 
     [Parameter]
@@ -29,6 +43,8 @@ else
     protected override async Task OnInitializedAsync()
     {
         order = await OrderRepository.GetByIdAsync(orderId);
+        user = await UserRepository.GetByIdAsync(order.UserId);
+        car = await CarRepository.GetByIdAsync(order.CarId);
     }
 
     private void Return()

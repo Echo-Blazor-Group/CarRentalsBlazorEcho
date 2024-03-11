@@ -75,6 +75,7 @@ else
                     <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>
                         <button @onclick="() => OrderDetails(item.OrderId)">Details</button>
+                        <button @onclick="() => OrderDelete(item.OrderId)">Cancel Reservation</button>
                     </td>
                 </tr>
             }

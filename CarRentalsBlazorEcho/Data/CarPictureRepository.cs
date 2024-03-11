@@ -28,5 +28,10 @@ namespace CarRentalsBlazorEcho.Data
         {
             return await _applicationDbContext.CarPictures.Where(p => p.CarId == id).ToListAsync();
         }
+
+        public async Task<IEnumerable<CarPicture>> GetAllAsync()
+        {
+            return await _applicationDbContext.CarPictures.OrderBy(c => c.Id).ToListAsync();
+        }
     }
 }

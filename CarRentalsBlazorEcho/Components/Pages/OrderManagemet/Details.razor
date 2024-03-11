@@ -11,7 +11,7 @@
 @if (order != null && user != null && car != null)
 {
     <p>Ordernr:    @order.OrderId</p>
-    <p>Date:       @order.StartDate - @order.EndDate</p>
+    <p>Date:       @order.StartDate.ToString("dd/MM/yyyy") - @order.EndDate.ToString("dd/MM/yyyy")</p>
 
     <h4>Customer</h4>
 
@@ -33,12 +33,12 @@ else
 <button class="btn btn-primary" @onclick="Return">Return</button>
 
 @code {
+    private User user;
+    private Car car;
     public Order order;
 
     [Parameter]
     public int orderId { get; set; }
-    private User user;
-    private Car car;
 
     protected override async Task OnInitializedAsync()
     {
