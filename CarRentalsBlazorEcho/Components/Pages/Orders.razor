@@ -126,7 +126,7 @@ else
     private async Task LoadOrders()
     {
         var _orders = await OrderRepository.GetAllAsync().ConfigureAwait(false);
-        orders = _orders.ToList();
+        orders = _orders.OrderBy(order => order.StartDate).ToList();
         filteredOrders = orders;
     }
 
