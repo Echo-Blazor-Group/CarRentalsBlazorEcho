@@ -13,15 +13,6 @@
 {
     <form @onsubmit="CreateOrder">
         <div class="form-group">
-            <label for="customerId">Customer Id:</label>
-            <select id="customerId" @bind="newOrder.UserId" class="form-control">
-                @foreach (var user in users)
-                {
-                    <option value="@user.UserId">@user.UserId</option>
-                }
-            </select>
-        </div>
-        <div class="form-group">
             <label for="startDate">Start Date:</label>
             <input type="date" id="startDate" @bind="newOrder.StartDate" class="form-control" />
         </div>
@@ -40,13 +31,19 @@ else
 @code {
     [Parameter]
     public int carId { get; set; }
-    private IEnumerable<User> users;
+    public int userId { get; set; }
+    private IEnumerable<User>? users;
 
     private Order newOrder = new Order();
 
 
     protected override async Task OnInitializedAsync()
     {
+        if (!CurrentUser.IsLoggedIn)
+        {
+            NavigationManager.NavigateTo("/Loggin");
+        }
+
         users = await UserRepository.GetAllAsync();
 
         newOrder.StartDate = DateTime.Now.Date;
@@ -57,7 +54,32 @@ else
     private async Task CreateOrder()
     {
         newOrder.CarId = carId;
+        newOrder.UserId = GetUserId(CurrentUser.Email);
+
         await OrderRepository.AddAsync(newOrder);
-        NavigationManager.NavigateTo("/Orders");
+        NavigationManager.NavigateTo("/Orders");        
+
+
+    }
+
+    private int GetUserId(string email)
+    {
+        if(users != null)
+        {
+            User? user = users.FirstOrDefault(u => u.Email == email);
+
+            if(user != null)
+            {
+                return user.UserId;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        else
+        {
+            return -1;
+        }
     }
 }

@@ -4,6 +4,7 @@
 @inject IOrder OrderRepository
 @inject ICar CarRepository
 @inject IUser UserRepository
+@inject NavigationManager NavigationManager
 
 <h3>Orders</h3>
 
@@ -38,9 +39,16 @@
                 <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
                 <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
                 <td>
-                    <a href="OrderManagement/Edit/@item.OrderId">Edit</a> |
-                    <a href="OrderManagement/Details/@item.OrderId">Details</a> |
-                    <a href="OrderManagement/Delete/@item.OrderId">Delete</a>
+                    @if (CurrentUser.IsAdmin)
+                    {
+                        <button @onclick="() => OrderDetails(item.OrderId)">Details</button>
+                        <button @onclick="() => OrderEdit(item.OrderId)">Edit</button>
+                        <button @onclick="() => OrderDelete(item.OrderId)">Delete</button>
+                    }
+                    else
+                    {
+                        <button @onclick="() => OrderDetails(item.OrderId)">Details</button>
+                    }
                 </td>
             </tr>
         }
@@ -110,5 +118,20 @@
         {
             return "-car not found-";
         }
+    }
+
+    private void OrderDetails(int id)
+    {
+        NavigationManager.NavigateTo($"OrderManagement/Delete/{id}");
+    }
+
+    private void OrderEdit(int id)
+    {
+        NavigationManager.NavigateTo($"OrderManagement/Delete/{id}");
+    }
+
+    private void OrderDelete(int id)
+    {
+        NavigationManager.NavigateTo($"OrderManagement/Delete/{id}");
     }
 }
