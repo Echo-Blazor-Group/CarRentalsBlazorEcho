@@ -4,13 +4,21 @@
 @inject IUser UserRepository
 @inject IOrder OrderRepository
 @inject ICar CarRepository
+@inject ICarPicture CarPictureRepository
 @inject NavigationManager NavigationManager
 @rendermode InteractiveAuto
 
 <h3>Make Reservation</h3>
 
+
+
 @if (newOrder != null && users != null)
 {
+    <p>@car.Brand @car.Model</p>
+    <p>
+        <img src=@carPictures.FirstOrDefault(p=>p.CarId==car.CarId).PictureUrl height="200px" />
+    </p>
+
     <form @onsubmit="CreateOrder">
         <div class="form-group">
             <label for="startDate">Start Date:</label>
@@ -34,10 +42,14 @@ else
 }
 
 @code {
+    private IEnumerable<User>? users;
+    private IEnumerable<CarPicture> carPictures { get; set; } = new List<CarPicture>();
+
+    private Car car;
+
     [Parameter]
     public int carId { get; set; }
     public int userId { get; set; }
-    private IEnumerable<User>? users;
 
     private Order newOrder = new Order();
 
@@ -50,6 +62,8 @@ else
         }
 
         users = await UserRepository.GetAllAsync();
+        car = await CarRepository.GetByIdAsync(carId);
+        carPictures = await CarPictureRepository.GetAllAsync();
 
         newOrder.StartDate = DateTime.Now.Date;
         newOrder.EndDate = DateTime.Now.Date.AddDays(1);
