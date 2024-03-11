@@ -49,9 +49,15 @@
                     <td>@car.Available</td>
                     <td>
                         <button @onclick="() => CarDetails(car)">Details</button>
-                        <button @onclick="() => EditCar(car)">Edit</button>
-                        <button @onclick="() => DeleteCar(car)">Delete</button>
-                        <button @onclick="() => MakeReservation(car)">Make Reservation</button>
+                        @if (CurrentUser.IsAdmin == true) {   
+                            <button @onclick="() => EditCar(car)">Edit</button>
+                            <button @onclick="() => DeleteCar(car)">Delete</button>
+                        }
+
+                        @if (CurrentUser.IsLoggedIn == true)
+                        {
+                            <button @onclick="() => MakeReservation(car)">Make Reservation</button>
+                        }     
                     </td>
                 </tr>
             }
@@ -73,7 +79,6 @@ else
     {
         cars = (await _carRep.GetAllAsync()).ToList();
         carCategories = (await _categoryRep.GetAllAsync()).ToList();
-
         if (carCategories == null)
         {
             carCategories = new List<CarCategory>();
