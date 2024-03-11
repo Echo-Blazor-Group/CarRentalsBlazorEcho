@@ -54,13 +54,13 @@
                     <td>
                         @if (CurrentUser.IsAdmin == true)
                         {
-                            <button @onclick="() => EditCar(car)">Edit</button>
-                            <button @onclick="() => DeleteCar(car)">Delete</button>
+                            <button class="btn btn-primary btn-sm" @onclick="() => EditCar(car)">Edit</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteCar(car)">Delete</button>
                         }
 
                         @if (CurrentUser.IsLoggedIn == true)
                         {
-                            <button @onclick="() => MakeReservation(car)">Make Reservation</button>
+                            <button class="btn btn-success btn-sm" style="margin-left: 5px;" @onclick="() => MakeReservation(car)">Make Reservation</button>
                         }
                     </td>
                 </tr>

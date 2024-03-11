@@ -22,8 +22,8 @@ else
     <label for="endDate">-</label>
     <input type="date" id="endDate" @bind="endDate" />
 
-    <button @onclick="FilterOrders">Filter</button>
-    <button @onclick="LoadOrders">Clear Filter</button>
+    <button class="btn btn-primary" @onclick="FilterOrders">Filter</button>
+    <button class="btn btn-secondary" @onclick="LoadOrders">Clear Filter</button>
 </div>
 
 @if (CurrentUser.IsAdmin)
@@ -53,8 +53,8 @@ else
                     <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
                     <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>
-                        <button @onclick="() => OrderEdit(item.OrderId)">Edit</button>
-                        <button @onclick="() => OrderDelete(item.OrderId)">Delete</button>
+                        <button class="btn btn-primary btn-sm" @onclick="() => OrderEdit(item.OrderId)">Edit</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => OrderDelete(item.OrderId)">Delete</button>
                     </td>
                 </tr>
             }
@@ -86,7 +86,7 @@ else
                     <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
                     <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>
-                        <button @onclick="() => OrderDelete(item.OrderId)">Cancel Reservation</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => OrderDelete(item.OrderId)">Cancel</button>
                     </td>
                 </tr>
             }
