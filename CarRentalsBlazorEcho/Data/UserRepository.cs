@@ -1,5 +1,6 @@
 ﻿using CarRentalsBlazorEcho.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CarRentalsBlazorEcho.Data
 {

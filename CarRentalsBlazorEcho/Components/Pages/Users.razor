@@ -2,9 +2,11 @@
 @using CarRentalsBlazorEcho.Data
 @using CarRentalsBlazorEcho.Models
 @using CarRentalsBlazorEcho.Components
+@using System.Linq;
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inject IUser UserRepository
+@inject ApplicationDbContext _context
 
 
 
@@ -91,7 +93,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in users)
+            @foreach (var user in user)
             {
                 <tr>
                     <td>
@@ -132,6 +134,8 @@
     {
         var currentUserId = GetUserId(CurrentUser.Email);
         users = await UserRepository.GetAllAsync();
+
+        user = _context.Users.Where(x => x.Email == CurrentUser.Email);
     }
     private int GetUserId(string email)
     {
