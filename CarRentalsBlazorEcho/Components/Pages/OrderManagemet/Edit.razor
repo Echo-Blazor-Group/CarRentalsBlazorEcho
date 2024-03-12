@@ -39,14 +39,18 @@
             <label for="endDate">End Date:</label>
             <input type="date" id="endDate" @bind="order.EndDate" class="form-control" />
         </div>
-        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <div style="margin-top: 20px;">
+            <button type="submit" class="btn btn-success" style="float: left; margin-right: 10px;">Save Changes</button>
+        </div>
     </form>
 }
 else
 {
     <p>Loading...</p>
 }
-<button class="btn btn-primary" @onclick="Return">Return</button>
+<div style="margin-top: 20px;">
+    <button class="btn btn-primary" @onclick="Return">Return</button>
+</div>
 
 @code {
     public Order order;
