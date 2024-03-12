@@ -91,7 +91,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in user)
+            @foreach (var user in users)
             {
                 <tr>
                     <td>
@@ -132,11 +132,6 @@
     {
         var currentUserId = GetUserId(CurrentUser.Email);
         users = await UserRepository.GetAllAsync();
-        if (CurrentUser.IsLoggedIn == true)
-        {
-            user = users;
-            user.Where(u => u.UserId == currentUserId);
-        }
     }
     private int GetUserId(string email)
     {
